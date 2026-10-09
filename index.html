@@ -7,91 +7,170 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@500;700;800&family=Noto+Sans+Tamil:wght@500;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    body { font-family: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
-    .parent { width: 100%; max-width: 310px; height: 330px; perspective: 1000px; margin: 0 auto; }
-    .uiverse-card { height: 100%; width: 100%; border-radius: 44px; background: linear-gradient(135deg, rgb(0, 255, 214) 0%, rgb(8, 226, 96) 100%); transition: all 0.5s ease-in-out; transform-style: preserve-3d; box-shadow: rgba(5, 71, 17, 0) 40px 50px 25px -40px, rgba(5, 71, 17, 0.2) 0px 25px 25px -5px; position: relative; cursor: pointer; }
-    .uiverse-card.theme-bible { background: linear-gradient(135deg, rgb(56, 189, 248) 0%, rgb(99, 102, 241) 100%); }
-    .uiverse-card.theme-category { background: linear-gradient(135deg, rgb(251, 191, 36) 0%, rgb(249, 115, 22) 100%); }
-    .uiverse-card.theme-topic { background: linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(79, 70, 229) 100%); }
-    .glass { transform-style: preserve-3d; position: absolute; inset: 8px; border-radius: 48px; border-top-right-radius: 100%; background: linear-gradient(0deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.88) 100%); transform: translate3d(0px, 0px, 25px); border-left: 1px solid white; border-bottom: 1px solid white; transition: all 0.5s ease-in-out; }
-    .content { padding: 85px 22px 0px 22px; transform: translate3d(0, 0, 26px); position: relative; z-index: 10; }
-    .content .badge-tag { display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); margin-bottom: 6px; color: #065f46; }
-    .content .title { display: block; color: #00894d; font-weight: 900; font-size: 18px; line-height: 1.25; letter-spacing: -0.3px; }
-    .theme-bible .content .title { color: #3730a3; }
-    .theme-category .content .title { color: #9a3412; }
-    .theme-topic .content .title { color: #4338ca; }
-    .content .text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: rgba(15, 23, 42, 0.88); font-size: 12px; line-height: 1.5; margin-top: 10px; font-weight: 600; }
-    .bottom { padding: 10px 14px; transform-style: preserve-3d; position: absolute; bottom: 18px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between; transform: translate3d(0, 0, 26px); z-index: 10; }
-    .bottom .view-more { display: flex; align-items: center; width: 100%; justify-content: flex-end; gap: 4px; transition: all 0.2s ease-in-out; }
-    .bottom .view-more:hover { transform: translate3d(0, 0, 10px); }
-    .bottom .view-more .view-more-button { background: none; border: none; color: #00894d; font-weight: 800; font-size: 12px; cursor: pointer; }
-    .theme-bible .bottom .view-more .view-more-button { color: #4338ca; }
-    .theme-category .bottom .view-more .view-more-button { color: #c2410c; }
-    .theme-topic .bottom .view-more .view-more-button { color: #4f46e5; }
-    .bottom .view-more .svg { fill: none; stroke: #00894d; stroke-width: 3px; width: 14px; height: 14px; }
-    .theme-bible .bottom .view-more .svg { stroke: #4338ca; }
-    .theme-category .bottom .view-more .svg { stroke: #c2410c; }
-    .theme-topic .bottom .view-more .svg { stroke: #4f46e5; }
-    .bottom .social-buttons-container { display: flex; gap: 6px; transform-style: preserve-3d; }
-    .bottom .social-buttons-container .social-button { width: 28px; height: 28px; padding: 4px; background: rgb(255, 255, 255); border-radius: 50%; border: none; display: grid; place-content: center; box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 5px -2px; cursor: pointer; }
-    .logo { position: absolute; right: 0; top: 0; transform-style: preserve-3d; }
-    .logo .circle { display: block; position: absolute; aspect-ratio: 1; border-radius: 50%; top: 0; right: 0; box-shadow: rgba(100, 100, 111, 0.2) -10px 10px 20px 0px; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); background: rgba(0, 249, 203, 0.25); transition: all 0.5s ease-in-out; }
-    .theme-bible .logo .circle { background: rgba(99, 102, 241, 0.25); }
-    .theme-category .logo .circle { background: rgba(249, 115, 22, 0.25); }
-    .theme-topic .logo .circle { background: rgba(168, 85, 247, 0.25); }
-    .logo .circle1 { width: 170px; transform: translate3d(0, 0, 20px); top: 8px; right: 8px; }
-    .logo .circle2 { width: 140px; transform: translate3d(0, 0, 40px); top: 10px; right: 10px; transition-delay: 0.1s; }
-    .logo .circle3 { width: 110px; transform: translate3d(0, 0, 60px); top: 17px; right: 17px; transition-delay: 0.2s; }
-    .logo .circle4 { width: 80px; transform: translate3d(0, 0, 80px); top: 23px; right: 23px; transition-delay: 0.3s; }
-    .logo .circle5 { width: 50px; height: 50px; transform: translate3d(0, 0, 100px); top: 30px; right: 30px; display: grid; place-content: center; transition-delay: 0.4s; background: rgba(255, 255, 255, 0.35); }
-    .logo .circle5 .icon-inner { font-size: 22px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-    .parent:hover .uiverse-card, .parent:active .uiverse-card { transform: rotate3d(1, 1, 0, 22deg); box-shadow: rgba(0, 0, 0, 0.3) 25px 40px 25px -25px; }
-    .parent:hover .uiverse-card .bottom .social-buttons-container .social-button, .parent:active .uiverse-card .bottom .social-buttons-container .social-button { transform: translate3d(0, 0, 40px); }
-    .parent:hover .uiverse-card .logo .circle2, .parent:active .uiverse-card .logo .circle2 { transform: translate3d(0, 0, 50px); }
-    .parent:hover .uiverse-card .logo .circle3, .parent:active .uiverse-card .logo .circle3 { transform: translate3d(0, 0, 70px); }
-    .parent:hover .uiverse-card .logo .circle4, .parent:active .uiverse-card .logo .circle4 { transform: translate3d(0, 0, 90px); }
-    .parent:hover .uiverse-card .logo .circle5, .parent:active .uiverse-card .logo .circle5 { transform: translate3d(0, 0, 110px); }
+    body {
+      font-family: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+    .font-serif-title { font-family: "Cinzel", serif; }
+
+    /* === REALISTIC 3D SACRED BOOK CSS === */
+    .book-wrapper {
+      perspective: 1200px;
+      width: 260px;
+      height: 370px;
+      margin: 15px auto;
+      cursor: pointer;
+    }
+
+    .book {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s ease;
+      transform: rotateY(-18deg) rotateX(8deg);
+      border-radius: 4px 14px 14px 4px;
+    }
+
+    .book-wrapper:hover .book,
+    .book-wrapper:active .book {
+      transform: rotateY(-5deg) rotateX(2deg) translateY(-8px) scale(1.03);
+    }
+
+    /* Hardcover Book Cover */
+    .book-cover {
+      position: absolute;
+      inset: 0;
+      border-radius: 4px 14px 14px 4px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backface-visibility: hidden;
+      transform: translateZ(14px);
+      box-shadow: 
+        inset 4px 0 8px rgba(0,0,0,0.4),
+        inset -2px 0 4px rgba(255,255,255,0.1),
+        15px 20px 30px rgba(0,0,0,0.6);
+    }
+
+    /* Left Spine fold highlight */
+    .book-cover::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0.08) 60%, rgba(0,0,0,0.3) 100%);
+      border-radius: 4px 0 0 4px;
+    }
+
+    /* 3D Paper Pages Thickness (Right edge) */
+    .book-pages {
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      right: -12px;
+      width: 26px;
+      background: repeating-linear-gradient(
+        90deg,
+        #fbf6ea 0px,
+        #ede3cf 1px,
+        #fbf6ea 2px
+      );
+      transform: rotateY(90deg);
+      transform-origin: right center;
+      border-radius: 0 4px 4px 0;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    /* Quran Book Styling */
+    .quran-theme {
+      background: radial-gradient(circle at 50% 30%, #064e3b 0%, #022c22 75%, #011913 100%);
+      border: 2px solid #d4af37;
+    }
+    .quran-border {
+      border: 1.5px solid rgba(212, 175, 55, 0.4);
+      outline: 1px dashed rgba(212, 175, 55, 0.6);
+      outline-offset: -6px;
+    }
+
+    /* Bible Book Styling */
+    .bible-theme {
+      background: radial-gradient(circle at 50% 30%, #581c87 0%, #311042 75%, #1e052c 100%);
+      border: 2px solid #e2b970;
+    }
+    .bible-border {
+      border: 1.5px solid rgba(226, 185, 112, 0.4);
+      outline: 1px dashed rgba(226, 185, 112, 0.6);
+      outline-offset: -6px;
+    }
+
+    /* Category Book Styling */
+    .category-theme {
+      background: radial-gradient(circle at 50% 30%, #7c2d12 0%, #431407 80%, #270b04 100%);
+      border: 2px solid #f59e0b;
+    }
+
+    /* Topic Chapter Styling */
+    .topic-theme {
+      background: radial-gradient(circle at 50% 30%, #1e3a8a 0%, #0f172a 80%, #020617 100%);
+      border: 2px solid #60a5fa;
+    }
   </style>
 </head>
-<body class="bg-[#0b1120] text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-white flex flex-col justify-between">
+<body class="bg-[#070b14] text-slate-100 min-h-screen selection:bg-amber-500 selection:text-slate-950 flex flex-col justify-between">
+
   <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-emerald-600/20 via-teal-500/10 to-transparent blur-3xl rounded-full"></div>
-    <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-indigo-600/15 blur-3xl rounded-full"></div>
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-amber-600/10 via-emerald-600/10 to-transparent blur-3xl rounded-full"></div>
+    <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-indigo-900/15 blur-3xl rounded-full"></div>
   </div>
 
-  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#0b1120]/80 backdrop-blur-xl px-4 lg:px-8 py-3.5">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#070b14]/85 backdrop-blur-xl px-4 lg:px-8 py-3.5">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-400 to-teal-300 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/30 text-lg shrink-0">AH</div>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-200 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20 text-base shrink-0">AH</div>
         <div>
-          <h1 class="text-sm lg:text-base font-extrabold tracking-tight text-white flex items-center gap-2">Ahley Hadees <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">RESEARCH</span></h1>
+          <h1 class="text-sm lg:text-base font-extrabold tracking-tight text-white flex items-center gap-2">
+            Ahley Hadees <span class="text-[10px] bg-amber-500/15 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30">RESEARCH</span>
+          </h1>
           <p class="text-[10px] text-slate-400 hidden sm:block">Comparative Religious Studies & Tamil Linguistic Verification</p>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="renderLevel1()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 transition">Home</button>
-      </div>
+      <button onclick="renderLevel1()" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">Home</button>
     </div>
   </header>
 
-  <main class="max-w-6xl w-full mx-auto px-4 lg:px-8 py-6 lg:py-8 flex-1">
-    <div class="text-center max-w-2xl mx-auto mb-6 lg:mb-8">
-      <h2 id="page-heading" class="text-2xl sm:text-3xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 tracking-tight mb-2">Explore Holy Texts</h2>
-      <p id="page-subheading" class="text-xs sm:text-sm text-slate-400 font-normal">Select a card below to begin your comparative study.</p>
+  <!-- Main Content Area -->
+  <main class="max-w-6xl w-full mx-auto px-4 lg:px-8 py-6 lg:py-10 flex-1">
+    
+    <div class="text-center max-w-2xl mx-auto mb-8">
+      <h2 id="page-heading" class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-100 to-slate-200 font-serif-title tracking-wide mb-2">
+        Explore Holy Texts
+      </h2>
+      <p id="page-subheading" class="text-xs sm:text-sm text-slate-400">
+        வேத நூலைத் தேர்ந்தெடுத்து உங்கள் ஆய்வுப் பயணத்தைத் தொடங்குங்கள்.
+      </p>
     </div>
 
-    <div class="max-w-4xl mx-auto mb-6 lg:mb-8 flex items-center justify-between gap-2 bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-2.5 px-3.5 sm:p-3 sm:px-4">
-      <div id="breadcrumbs" class="flex items-center text-xs lg:text-sm text-slate-300 font-medium overflow-x-auto whitespace-nowrap"></div>
-      <button id="back-btn" onclick="goBackOneStep()" class="hidden text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl transition flex items-center gap-1 shrink-0">← Back</button>
+    <!-- Breadcrumbs Navigation -->
+    <div class="max-w-3xl mx-auto mb-8 flex items-center justify-between gap-2 bg-slate-900/60 backdrop-blur border border-slate-800/80 rounded-2xl p-2.5 px-4">
+      <div id="breadcrumbs" class="flex items-center text-xs sm:text-sm text-slate-300 font-medium overflow-x-auto whitespace-nowrap"></div>
+      <button id="back-btn" onclick="goBackOneStep()" class="hidden text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 px-3.5 py-1.5 rounded-xl transition shrink-0">← Back</button>
     </div>
 
-    <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center py-2"></div>
+    <!-- Books Display Shelf Grid -->
+    <div id="cards-container" class="flex flex-wrap items-center justify-center gap-10 sm:gap-14 py-4"></div>
   </main>
 
-  <footer class="border-t border-slate-800/80 py-5 text-center text-xs text-slate-500">
-    <div class="max-w-6xl mx-auto px-4">Ahley Hadees Comparative Research Platform • Responsive 3D</div>
+  <footer class="border-t border-slate-900 py-5 text-center text-xs text-slate-600">
+    <div class="max-w-6xl mx-auto px-4">Ahley Hadees Research Library • 3D Sacred Book Edition</div>
   </footer>
 
   <script src="js/data.js"></script>
@@ -116,84 +195,182 @@
       else if (currentSection) renderLevel1();
     }
 
+    /* LEVEL 1: HOLY QURAN & THE BIBLE 3D BOOKS */
     function renderLevel1() {
       currentSection = null;
       currentCategory = null;
       backBtn.classList.add("hidden");
       pageHeading.textContent = "Explore Holy Texts";
-      pageSubheading.textContent = "Choose a scripture to begin your comparative study.";
-      breadcrumbs.innerHTML = `<span class="flex items-center gap-1.5 text-emerald-400 font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Main Library</span>`;
-      cardsContainer.className = "grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 justify-items-center max-w-2xl mx-auto py-2";
+      pageSubheading.textContent = "வேத நூலைத் தேர்ந்தெடுத்து உங்கள் ஆய்வுப் பயணத்தைத் தொடங்குங்கள்.";
+      breadcrumbs.innerHTML = `<span class="flex items-center gap-1.5 text-amber-400 font-semibold"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Main Sacred Library</span>`;
+
       cardsContainer.innerHTML = `
-        <div class="parent" onclick="selectSection('Quran')">
-          <div class="uiverse-card">
-            <div class="logo"><span class="circle circle1"></span><span class="circle circle2"></span><span class="circle circle3"></span><span class="circle circle4"></span><span class="circle circle5"><span class="icon-inner">📖</span></span></div>
-            <div class="glass"></div>
-            <div class="content"><span class="badge-tag">ISLAM</span><span class="title">HOLY QURAN</span><span class="text">Scientific revelations, cosmic expansion, and Tawheed verses analyzed with classical commentaries.</span></div>
-            <div class="bottom"><div class="social-buttons-container"><button class="social-button">📜</button><button class="social-button">🔬</button></div><div class="view-more"><button class="view-more-button">Explore</button><svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div></div>
+        <!-- 3D QURAN BOOK -->
+        <div class="book-wrapper" onclick="selectSection('Quran')">
+          <div class="book">
+            <div class="book-pages"></div>
+            <div class="book-cover quran-theme quran-border">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-amber-300/80 tracking-widest uppercase border border-amber-400/30 px-2 py-0.5 rounded">ISLAM</span>
+                <span class="text-amber-400 text-lg font-serif">۞</span>
+              </div>
+              
+              <div class="text-center my-auto py-2">
+                <div class="w-14 h-14 mx-auto rounded-full border border-amber-400/40 flex items-center justify-center mb-3 bg-emerald-950/40 text-2xl shadow-inner">
+                  📖
+                </div>
+                <h3 class="font-serif-title text-xl font-bold text-amber-200 tracking-wide leading-tight">
+                  HOLY QURAN
+                </h3>
+                <p class="text-[11px] text-emerald-200/80 font-tamil mt-1 font-semibold">
+                  திருக்குர்ஆன் ஆய்வுகள்
+                </p>
+                <div class="w-10 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto my-3"></div>
+                <p class="text-[11px] text-slate-300 leading-relaxed line-clamp-3 font-normal px-1">
+                  அறிவியல் சான்றுகள், பிரபஞ்ச விரிவாக்கம் மற்றும் ஓரிறைக் கொள்கை விளக்கங்கள்.
+                </p>
+              </div>
+
+              <div class="pt-2 border-t border-amber-400/20 flex items-center justify-between text-[11px] font-bold text-amber-300">
+                <span>திறக்க கிளிக் செய்க</span>
+                <span>ஆராய் →</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="parent" onclick="selectSection('Bible')">
-          <div class="uiverse-card theme-bible">
-            <div class="logo"><span class="circle circle1"></span><span class="circle circle2"></span><span class="circle circle3"></span><span class="circle circle4"></span><span class="circle circle5"><span class="icon-inner">✝️</span></span></div>
-            <div class="glass"></div>
-            <div class="content"><span class="badge-tag" style="color:#3730a3;">CHRISTIANITY</span><span class="title">THE BIBLE</span><span class="text">Old & New Testament prophecies, Hebrew/Greek roots, and comparative studies in Tamil.</span></div>
-            <div class="bottom"><div class="social-buttons-container"><button class="social-button">🕊️</button><button class="social-button">🏛️</button></div><div class="view-more"><button class="view-more-button">Explore</button><svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div></div>
+
+        <!-- 3D BIBLE BOOK -->
+        <div class="book-wrapper" onclick="selectSection('Bible')">
+          <div class="book">
+            <div class="book-pages"></div>
+            <div class="book-cover bible-theme bible-border">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-amber-200/80 tracking-widest uppercase border border-amber-300/30 px-2 py-0.5 rounded">CHRISTIANITY</span>
+                <span class="text-amber-300 text-lg">✝</span>
+              </div>
+              
+              <div class="text-center my-auto py-2">
+                <div class="w-14 h-14 mx-auto rounded-full border border-amber-400/40 flex items-center justify-center mb-3 bg-purple-950/40 text-2xl shadow-inner">
+                  📜
+                </div>
+                <h3 class="font-serif-title text-xl font-bold text-amber-100 tracking-wide leading-tight">
+                  THE BIBLE
+                </h3>
+                <p class="text-[11px] text-purple-200/80 font-tamil mt-1 font-semibold">
+                  பரிசுத்த வேதாகமம்
+                </p>
+                <div class="w-10 h-0.5 bg-gradient-to-r from-transparent via-amber-300 to-transparent mx-auto my-3"></div>
+                <p class="text-[11px] text-slate-300 leading-relaxed line-clamp-3 font-normal px-1">
+                  BSI, RC மற்றும் யெகோவா தமிழ் பதிப்புகளின் தீர்க்கதரிசன ஒப்பாய்வு.
+                </p>
+              </div>
+
+              <div class="pt-2 border-t border-amber-300/20 flex items-center justify-between text-[11px] font-bold text-amber-200">
+                <span>திறக்க கிளிக் செய்க</span>
+                <span>ஆராய் →</span>
+              </div>
+            </div>
           </div>
         </div>
       `;
     }
 
+    /* LEVEL 2: CATEGORIES (Book Volumes) */
     function selectSection(section) {
       currentSection = section;
       currentCategory = null;
       backBtn.classList.remove("hidden");
       pageHeading.textContent = `${section} Categories`;
-      pageSubheading.textContent = `Select a research category under ${section}.`;
-      breadcrumbs.innerHTML = `<span onclick="renderLevel1()" class="hover:text-emerald-400 cursor-pointer transition">Home</span><span class="mx-1.5 text-slate-600">/</span><span class="text-emerald-400 font-bold">${section}</span>`;
+      pageSubheading.textContent = `${section} பிரிவின் கீழ் உள்ள ஆய்வுத் தொகுப்பைத் தேர்ந்தெடுக்கவும்.`;
+      breadcrumbs.innerHTML = `<span onclick="renderLevel1()" class="hover:text-amber-400 cursor-pointer transition">Library</span><span class="mx-2 text-slate-600">/</span><span class="text-amber-400 font-bold">${section}</span>`;
+
       const categories = [...new Set(allTopics.filter(t => t.section === section).map(t => t.category))];
       if (categories.length === 0) {
-        cardsContainer.className = "w-full max-w-md mx-auto";
-        cardsContainer.innerHTML = `<div class="bg-slate-900/60 p-8 rounded-2xl text-center border border-slate-800"><p class="text-slate-400 text-sm mb-4">No categories added in ${section} yet.</p></div>`;
+        cardsContainer.innerHTML = `<div class="bg-slate-900/60 p-8 rounded-3xl text-center border border-slate-800 max-w-sm"><p class="text-slate-400 text-sm">No categories added yet.</p></div>`;
         return;
       }
-      cardsContainer.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center py-2";
+
       cardsContainer.innerHTML = categories.map(cat => {
         const count = allTopics.filter(t => t.section === section && t.category === cat).length;
         return `
-          <div class="parent" onclick="selectCategory('${cat}')">
-            <div class="uiverse-card theme-category">
-              <div class="logo"><span class="circle circle1"></span><span class="circle circle2"></span><span class="circle circle3"></span><span class="circle circle4"></span><span class="circle circle5"><span class="icon-inner">📁</span></span></div>
-              <div class="glass"></div>
-              <div class="content"><span class="badge-tag" style="color:#9a3412;">CATEGORY</span><span class="title">${cat}</span><span class="text">Contains ${count} verified research chapters and comparative verse studies.</span></div>
-              <div class="bottom"><div class="social-buttons-container"><button class="social-button">🔍</button><button class="social-button">📖</button></div><div class="view-more"><button class="view-more-button">Open Topics</button><svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div></div>
+          <div class="book-wrapper" onclick="selectCategory('${cat}')">
+            <div class="book">
+              <div class="book-pages"></div>
+              <div class="book-cover category-theme border border-amber-500/50">
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] font-bold text-amber-300 tracking-wider uppercase border border-amber-500/30 px-2 py-0.5 rounded">VOLUME</span>
+                  <span class="text-amber-400 font-mono text-xs font-bold">${count} தலைப்புகள்</span>
+                </div>
+                
+                <div class="text-center my-auto py-2">
+                  <div class="w-12 h-12 mx-auto rounded-full border border-amber-500/40 flex items-center justify-center mb-3 bg-amber-950/40 text-xl">
+                    📁
+                  </div>
+                  <h3 class="text-lg font-bold text-white tracking-wide leading-tight">
+                    ${cat}
+                  </h3>
+                  <div class="w-8 h-0.5 bg-amber-500/40 mx-auto my-3"></div>
+                  <p class="text-[11px] text-slate-300">
+                    சரிபார்க்கப்பட்ட வசனங்களின் ஒப்பாய்வு தொகுப்பு.
+                  </p>
+                </div>
+
+                <div class="pt-2 border-t border-amber-500/20 flex items-center justify-between text-[11px] font-bold text-amber-300">
+                  <span>தொகுப்பைத் திறக்க</span>
+                  <span>வாசி →</span>
+                </div>
+              </div>
             </div>
           </div>
         `;
       }).join("");
     }
 
+    /* LEVEL 3: CHAPTERS / TOPICS */
     function selectCategory(category) {
       currentCategory = category;
       backBtn.classList.remove("hidden");
       pageHeading.textContent = `${category} Studies`;
-      pageSubheading.textContent = `Click any topic card to begin verse-by-verse analysis.`;
-      breadcrumbs.innerHTML = `<span onclick="renderLevel1()" class="hover:text-emerald-400 cursor-pointer transition">Home</span><span class="mx-1.5 text-slate-600">/</span><span onclick="selectSection('${currentSection}')" class="hover:text-emerald-400 cursor-pointer transition">${currentSection}</span><span class="mx-1.5 text-slate-600">/</span><span class="text-indigo-400 font-bold">${category}</span>`;
+      pageSubheading.textContent = `ஆய்வு செய்ய வேண்டிய தலைப்பைத் தேர்ந்தெடுக்கவும்.`;
+      breadcrumbs.innerHTML = `<span onclick="renderLevel1()" class="hover:text-amber-400 cursor-pointer transition">Library</span><span class="mx-2 text-slate-600">/</span><span onclick="selectSection('${currentSection}')" class="hover:text-amber-400 cursor-pointer transition">${currentSection}</span><span class="mx-2 text-slate-600">/</span><span class="text-indigo-400 font-bold">${category}</span>`;
+
       const filtered = allTopics.filter(t => t.section === currentSection && t.category === category);
-      cardsContainer.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center py-2";
       cardsContainer.innerHTML = filtered.map(item => `
-        <div class="parent" onclick="openTopic('${item.id}')">
-          <div class="uiverse-card theme-topic">
-            <div class="logo"><span class="circle circle1"></span><span class="circle circle2"></span><span class="circle circle3"></span><span class="circle circle4"></span><span class="circle circle5"><span class="icon-inner">✨</span></span></div>
-            <div class="glass"></div>
-            <div class="content"><span class="badge-tag" style="color:#4338ca;">${item.chapterRef || "VERSE STUDY"}</span><span class="title">${item.title}</span><span class="text">${item.headerNote || "Verse-by-verse comparison and model answers."}</span></div>
-            <div class="bottom"><div class="social-buttons-container"><button class="social-button">✍️</button><button class="social-button">💡</button></div><div class="view-more"><button class="view-more-button">Study</button><svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div></div>
+        <div class="book-wrapper" onclick="openTopic('${item.id}')">
+          <div class="book">
+            <div class="book-pages"></div>
+            <div class="book-cover topic-theme border border-blue-500/40">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-mono font-bold text-blue-300 border border-blue-400/30 px-2 py-0.5 rounded">${item.chapterRef || "CHAPTER"}</span>
+                <span class="text-blue-400 text-xs">★</span>
+              </div>
+              
+              <div class="text-center my-auto py-2">
+                <div class="w-12 h-12 mx-auto rounded-full border border-blue-400/30 flex items-center justify-center mb-3 bg-blue-950/40 text-xl">
+                  ✨
+                </div>
+                <h3 class="text-base font-bold text-white tracking-tight leading-snug line-clamp-2">
+                  ${item.title}
+                </h3>
+                <div class="w-8 h-0.5 bg-blue-400/30 mx-auto my-3"></div>
+                <p class="text-[11px] text-slate-300 line-clamp-3">
+                  ${item.headerNote || "வசன ஆய்வு, எளிய தமிழ் மற்றும் வினா-விடை ஒப்பீடு."}
+                </p>
+              </div>
+
+              <div class="pt-2 border-t border-blue-500/20 flex items-center justify-between text-[11px] font-bold text-blue-300">
+                <span>ஆய்வு செய்க</span>
+                <span>தொடங்கு →</span>
+              </div>
+            </div>
           </div>
         </div>
       `).join("");
     }
 
-    function openTopic(id) { window.location.href = `topic.html?id=${id}`; }
+    function openTopic(id) {
+      window.location.href = `topic.html?id=${id}`;
+    }
   </script>
 </body>
 </html>
