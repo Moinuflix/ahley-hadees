@@ -1,11 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('topic-form');
+  const exportBtn = document.getElementById('export-btn');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const topics = await getTopics();
+    const newId = `${document.getElementById('section').value.toLowerCase()}-${Date.now()}`;
+
     const newTopic = {
-      id: `${document.getElementById('section').value.toLowerCase()}-${Date.now()}`,
+      id: newId,
       section: document.getElementById('section').value,
       category: document.getElementById('category').value.trim(),
       title: document.getElementById('title').value.trim(),
@@ -17,27 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
       sources: document.getElementById('sources').value.trim()
     };
 
-    try {
-      const response = await fetch('/api/save-topic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTopic)
-      });
+    topics.push(newTopic);
+    saveTopics(topics);
 
-      if (response.ok) {
-        alert('✅ Topic Seedha data/topics.json File Me Save Ho Gaya!');
-        // Local cache clear taaki index page par naya topic turant dikhe
-        localStorage.removeItem('ahley_hadees_topics');
-        form.reset();
-      } else {
-        alert('❌ Error saving data via Python server');
-      }
-    } catch (err) {
-      // Fallback agar python server na chal raha ho
-      const topics = getTopics();
-      topics.push(newTopic);
-      saveTopics(topics);
-      alert('⚠️ Python server unreachable! Saved to LocalStorage.');
-    }
+    alert('Topic successfully saved! Automatically visible in drill-down view.');
+    form.reset();
+  });
+
+  // Export updated topics.json file download karne ke liye
+  exportBtn.addEventListener('click', async () => {
+    const topics = await getTopics();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(topics, null, 2));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", "topics.json");
+    dlAnchorElem.click();
   });
 });
