@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Research Topics — Ahley Hadees</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@500;700;800&family=Noto+Sans+Tamil:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      background: #050811;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .font-serif-title { font-family: "Cinzel", serif; }
+
+    /* 3D Perspective Card Engine */
+    .parent-3d {
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-3d-tilt {
+      position: relative;
+      padding-top: 45px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      transform-style: preserve-3d;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02) 18.75%, rgba(15,23,42,0.85) 0 31.25%, rgba(255,255,255,0.02) 0),
+                  repeating-linear-gradient(45deg, rgba(15,23,42,0.6) -6.25% 6.25%, rgba(30,41,59,0.7) 0 18.75%);
+      background-size: 50px 50px;
+      background-color: #0f172a;
+      box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.9);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .parent-3d:hover .card-3d-tilt {
+      background-position: -80px 80px, -80px 80px;
+      transform: rotate3d(0.5, 1, 0, 20deg) translateY(-6px);
+      border-color: rgba(99, 102, 241, 0.6);
+      box-shadow: 0 30px 50px -10px rgba(79, 70, 229, 0.4);
+    }
+
+    .content-box-3d {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border-radius: 0 0 18px 18px;
+      padding: 24px 18px 18px 18px;
+      transform-style: preserve-3d;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-title-3d {
+      display: inline-block;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.35;
+      transform: translate3d(0px, 0px, 45px);
+      transition: all 0.4s ease-in-out;
+      text-shadow: 0 2px 0 #1e1b4b, 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .parent-3d:hover .card-title-3d {
+      transform: translate3d(0px, 0px, 55px);
+      color: #a5b4fc;
+    }
+
+    .card-content-3d {
+      margin-top: 10px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #cbd5e1;
+      line-height: 1.5;
+      transform: translate3d(0px, 0px, 30px);
+      transition: all 0.4s ease-in-out;
+    }
+
+    .btn-3d {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      padding: 0.45rem 0.85rem;
+      border-radius: 12px;
+      transform: translate3d(0px, 0px, 35px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+      transition: all 0.4s ease-in-out;
+    }
+
+    .badge-3d {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #020617;
+      border: 1.5px solid #6366f1;
+      border-radius: 14px;
+      padding: 4px 9px;
+      transform: translate3d(0px, 0px, 65px);
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.8);
+      text-align: center;
+    }
+    .badge-3d span { display: block; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Ambient Light -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[750px] h-[380px] bg-indigo-600/10 blur-3xl rounded-full"></div>
+    <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-red-950/20 blur-3xl rounded-full"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#050811]/90 backdrop-blur-xl px-4 lg:px-8 py-3.5">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-200 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20 text-base shrink-0">AH</div>
+        <div>
+          <h1 class="text-sm lg:text-base font-extrabold tracking-tight text-white flex items-center gap-2">
+            Ahley Hadees <span class="text-[10px] bg-amber-500/15 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30">RESEARCH</span>
+          </h1>
+        </div>
+      </div>
+      <a href="index.html" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">← Back to Library</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-6xl w-full mx-auto px-4 lg:px-8 py-6 lg:py-10 flex-1">
+    
+    <!-- Title and Search Bar -->
+    <div class="max-w-2xl mx-auto text-center mb-8">
+      <h2 id="section-title" class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-white to-slate-200 font-serif-title tracking-wide mb-2">
+        Research Topics
+      </h2>
+      <p id="section-subtitle" class="text-xs sm:text-sm text-slate-400 mb-6">
+        ஆய்வு செய்ய வேண்டிய தலைப்பைத் தேர்ந்தெடுக்கவும்.
+      </p>
+
+      <!-- Realtime Search for 40+ Topics -->
+      <div class="relative max-w-md mx-auto">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search topic or chapter reference (எ.கா: மத்தேயு)..." 
+          class="w-full bg-slate-900/90 border border-slate-700/80 rounded-2xl px-4 py-2.5 pl-10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition shadow-inner"
+        />
+        <span class="absolute left-3.5 top-3 text-slate-500 text-sm">🔍</span>
+      </div>
+    </div>
+
+    <!-- Topics Count Status -->
+    <div class="flex items-center justify-between max-w-5xl mx-auto mb-6 px-2 text-xs text-slate-400">
+      <span id="topics-counter" class="font-semibold text-indigo-400">Loading topics...</span>
+      <span class="text-[11px] bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">40+ Capacity Engine</span>
+    </div>
+
+    <!-- Topics 3D Grid -->
+    <div id="topics-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-2 max-w-5xl mx-auto"></div>
+  </main>
+
+  <footer class="border-t border-slate-900 py-5 text-center text-xs text-slate-600">
+    Ahley Hadees Research Library • Dedicated Multi-Topic Engine
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionName = urlParams.get("section") || "Bible";
+
+    const sectionTitle = document.getElementById("section-title");
+    const sectionSubtitle = document.getElementById("section-subtitle");
+    const topicsGrid = document.getElementById("topics-grid");
+    const searchInput = document.getElementById("search-input");
+    const topicsCounter = document.getElementById("topics-counter");
+
+    let sectionTopics = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const allTopics = await getTopics();
+      sectionTopics = allTopics.filter(t => t.section.toLowerCase() === sectionName.toLowerCase());
+
+      sectionTitle.textContent = `${sectionName} Research Topics`;
+      sectionSubtitle.textContent = `${sectionName} பிரிவின் கீழ் உள்ள அனைத்து ஆய்வுத் தலைப்புகள்.`;
+
+      renderTopics(sectionTopics);
+
+      // Search Filter Handler
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const filtered = sectionTopics.filter(t => 
+          (t.title && t.title.toLowerCase().includes(query)) ||
+          (t.chapterRef && t.chapterRef.toLowerCase().includes(query)) ||
+          (t.headerNote && t.headerNote.toLowerCase().includes(query))
+        );
+        renderTopics(filtered);
+      });
+    });
+
+    function renderTopics(topics) {
+      topicsCounter.textContent = `காண்பிக்கப்படும் தலைப்புகள்: ${topics.length}`;
+
+      if (topics.length === 0) {
+        topicsGrid.className = "text-center py-12 col-span-full";
+        topicsGrid.innerHTML = `
+          <div class="bg-slate-900/60 p-8 rounded-3xl border border-slate-800 max-w-sm mx-auto">
+            <p class="text-slate-400 text-sm">எந்த தலைப்புகளும் கிடைக்கவில்லை.</p>
+          </div>
+        `;
+        return;
+      }
+
+      topicsGrid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-2 max-w-5xl mx-auto";
+      topicsGrid.innerHTML = topics.map((item, idx) => `
+        <div class="parent-3d" onclick="openTopic('${item.id}')">
+          <div class="card-3d-tilt">
+            
+            <div class="badge-3d">
+              <span class="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">TOPIC</span>
+              <span class="text-sm font-black text-white font-mono">#${idx + 1}</span>
+            </div>
+
+            <div class="content-box-3d">
+              <span class="text-[10px] font-mono font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-md inline-block mb-2">
+                ${item.chapterRef || "CHAPTER"}
+              </span>
+
+              <h3 class="card-title-3d block min-h-[44px]">
+                ${item.title}
+              </h3>
+
+              <p class="card-content-3d line-clamp-2 min-h-[36px]">
+                ${item.headerNote || "ஒவ்வொரு வசனத்திற்கும் எளிய தமிழ் உரை, மாதிரி வினா மற்றும் சுய ஆய்வு வசதி."}
+              </p>
+
+              <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-800/80">
+                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> BSI • RC • JW
+                </span>
+                <span class="btn-3d">
+                  ஆராய் →
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openTopic(id) {
+      window.location.href = `topic.html?id=${id}`;
+    }
+  </script>
+</body>
+</html>
