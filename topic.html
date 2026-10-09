@@ -2,48 +2,88 @@
 <html lang="ta">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>வேத ஆராய்ச்சி - Multi-Version Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>வேத ஆராய்ச்சி - Comparative Study</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { -webkit-tap-highlight-color: transparent; }
-    .tab-btn.active { background-color: #4f46e5; color: #fff; border-color: #4f46e5; }
+    body { font-family: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif; -webkit-tap-highlight-color: transparent; }
+    .lang-pill.active {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    }
   </style>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 pb-28">
-  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 px-4 lg:px-8 py-3 shadow-sm">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <a href="index.html" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg border border-indigo-100 transition">← Library</a>
-        <h1 id="top-title" class="text-sm lg:text-base font-bold text-slate-900 truncate max-w-xs lg:max-w-md">வேத ஆராய்ச்சி</h1>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-32 selection:bg-indigo-500 selection:text-white">
+
+  <!-- Sticky Header with Master Language Switcher -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3 shadow-lg">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+        <a href="index.html" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1.5 rounded-xl border border-indigo-500/30 transition shrink-0">
+          ← Library
+        </a>
+        <h1 id="top-title" class="text-sm font-bold text-white truncate max-w-[200px] sm:max-w-xs">வேத ஆராய்ச்சி</h1>
+        <span id="top-ref" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0">
+          ...
+        </span>
       </div>
-      <span id="top-ref" class="text-xs lg:text-sm font-mono font-semibold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">Loading...</span>
+
+      <!-- Master Scripture Version Switcher -->
+      <div class="w-full sm:w-auto flex items-center justify-center bg-slate-950 p-1 rounded-2xl border border-slate-800 shadow-inner">
+        <button onclick="setGlobalVersion('bsi')" id="pill-bsi" class="lang-pill active text-xs font-bold px-3 py-1.5 rounded-xl transition-all">
+          BSI (புரொட்டஸ்டன்ட்)
+        </button>
+        <button onclick="setGlobalVersion('rc')" id="pill-rc" class="lang-pill text-xs font-bold px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all">
+          RC (திருவிவிலியம்)
+        </button>
+        <button onclick="setGlobalVersion('jw')" id="pill-jw" class="lang-pill text-xs font-bold px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all">
+          யெகோவா (NWT)
+        </button>
+      </div>
+
     </div>
   </header>
 
-  <div class="max-w-6xl mx-auto px-4 lg:px-8 pt-6">
-    <div class="bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-800 text-white rounded-2xl p-6 shadow-md">
-      <div class="flex items-center gap-2 text-xs text-indigo-200 mb-2 font-medium">
-        <span class="bg-indigo-500/40 px-2.5 py-0.5 rounded-md">Comparative Verse Study</span>
-        <span id="verse-count-badge" class="bg-white/20 px-2.5 py-0.5 rounded-md font-semibold text-white">0 வசனங்கள்</span>
+  <!-- Topic Hero Banner -->
+  <div class="max-w-5xl mx-auto px-4 lg:px-8 pt-6">
+    <div class="bg-gradient-to-r from-slate-850 via-slate-800 to-indigo-950/60 border border-slate-700/80 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex items-center gap-2 text-xs text-indigo-300 mb-2 font-medium">
+        <span class="bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 px-2.5 py-0.5 rounded-md font-semibold">Comparative Study</span>
+        <span id="verse-count-badge" class="bg-slate-700/60 text-slate-200 px-2.5 py-0.5 rounded-md font-bold">0 வசனங்கள்</span>
       </div>
-      <h2 id="banner-title" class="text-xl lg:text-2xl font-bold">Research Title</h2>
-      <p id="banner-desc" class="text-xs lg:text-sm text-indigo-100 mt-1 opacity-90 max-w-2xl">ஒவ்வொரு வசனத்திற்கும் BSI, RC, யெகோவா பதிப்புகள் மற்றும் வினா-விடை ஒப்பீடு.</p>
+      <h2 id="banner-title" class="text-xl sm:text-2xl font-black text-white tracking-tight">Research Title</h2>
+      <p id="banner-desc" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+        வசனத்தைக் கிளிக் செய்து எளிய தமிழ் விளக்கத்தையும், கீழே உள்ள வினா-விடைகளையும் ஆராயுங்கள்.
+      </p>
     </div>
   </div>
 
-  <main id="verses-list" class="max-w-6xl mx-auto p-4 lg:px-8 space-y-6"></main>
+  <!-- Main Verse Chain Cards List -->
+  <main id="verses-list" class="max-w-5xl mx-auto p-4 lg:px-8 space-y-6 pt-6"></main>
 
-  <div class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur border-t border-slate-200 z-20 shadow-lg">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4 px-2 lg:px-4">
-      <span class="hidden md:inline text-xs font-medium text-slate-500">Type your research insights and click save to keep your answers locally.</span>
-      <button onclick="saveAllAnswers()" class="w-full md:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white text-xs lg:text-sm font-bold rounded-xl shadow transition">💾 எல்லா பதில்களையும் சேமி (Save Answers)</button>
+  <!-- Sticky Bottom Save Bar -->
+  <div class="fixed bottom-0 left-0 right-0 p-3 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-30 shadow-2xl">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4 px-2">
+      <span class="hidden sm:inline text-xs text-slate-400 font-medium">
+        💡 உங்கள் ஆய்வுக் குறிப்புகளை டைப் செய்து சேமித்துக்கொள்ளுங்கள்.
+      </span>
+      <button onclick="saveAllAnswers()" class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+        <span>💾</span> எல்லா பதில்களையும் சேமி (Save Answers)
+      </button>
     </div>
   </div>
 
   <script src="js/data.js"></script>
   <script>
     let currentTopicData = null;
+    let selectedVersion = "bsi"; // "bsi" | "rc" | "jw"
+
     document.addEventListener("DOMContentLoaded", async () => {
       const params = new URLSearchParams(window.location.search);
       const topicId = params.get("id");
@@ -51,98 +91,168 @@
       currentTopicData = topics.find(t => t.id === topicId) || topics[0];
 
       if (!currentTopicData) {
-        document.getElementById("verses-list").innerHTML = `<div class="text-center p-8 bg-white rounded-2xl border border-slate-200"><p class="text-slate-500 text-sm">Topic not found.</p><a href="index.html" class="inline-block mt-3 text-xs font-bold text-indigo-600">Go to Home</a></div>`;
+        document.getElementById("verses-list").innerHTML = `
+          <div class="text-center p-8 bg-slate-800 rounded-3xl border border-slate-700">
+            <p class="text-slate-400 text-sm">Topic not found.</p>
+            <a href="index.html" class="inline-block mt-3 text-xs font-bold text-indigo-400">Go to Home</a>
+          </div>
+        `;
         return;
       }
 
       document.getElementById("top-title").textContent = currentTopicData.title;
       document.getElementById("top-ref").textContent = currentTopicData.chapterRef || "";
       document.getElementById("banner-title").textContent = currentTopicData.title;
-      if (currentTopicData.headerNote) document.getElementById("banner-desc").textContent = currentTopicData.headerNote;
-      
+      if (currentTopicData.headerNote) {
+        document.getElementById("banner-desc").textContent = currentTopicData.headerNote;
+      }
+
       const verses = currentTopicData.verses || [];
       document.getElementById("verse-count-badge").textContent = `${verses.length} வசனங்கள்`;
 
+      renderAllVerses();
+    });
+
+    function setGlobalVersion(ver) {
+      selectedVersion = ver;
+      ["bsi", "rc", "jw"].forEach(v => {
+        const btn = document.getElementById(`pill-${v}`);
+        if (v === ver) {
+          btn.classList.add("active");
+          btn.classList.remove("text-slate-400");
+        } else {
+          btn.classList.remove("active");
+          btn.classList.add("text-slate-400");
+        }
+      });
+      renderAllVerses();
+    }
+
+    function renderAllVerses() {
+      if (!currentTopicData || !currentTopicData.verses) return;
       const mainContainer = document.getElementById("verses-list");
       const savedAnswers = JSON.parse(localStorage.getItem(`answers_${currentTopicData.id}`) || "{}");
 
-      mainContainer.innerHTML = verses.map((item, index) => {
-        const bsi = item.bsiTamil || item.biblical || "தரவு இல்லை";
-        const rc = item.rcTamil || "RC திருவிவிலியப் பதிவு சேர்க்கப்படவில்லை.";
-        const jw = item.jwTamil || "யெகோவா சாட்சிகள் பதிவு சேர்க்கப்படவில்லை.";
-        const modern = item.modern || "எளிய தமிழ் விளக்கம் சேர்க்கப்படவில்லை.";
-        const hasAnswer = item.defaultAnswer && item.defaultAnswer.trim().length > 0;
+      const versionBadgeNames = {
+        bsi: "BSI வேதாமம் (Protestant)",
+        rc: "RC திருவிவிலியம் (Catholic)",
+        jw: "யெகோவா சாட்சிகள் (NWT)"
+      };
+
+      mainContainer.innerHTML = currentTopicData.verses.map((item, index) => {
+        let currentText = "";
+        if (selectedVersion === "bsi") currentText = item.bsiTamil || item.biblical || "BSI உரை சேர்க்கப்படவில்லை.";
+        else if (selectedVersion === "rc") currentText = item.rcTamil || "RC திருவிவிலியப் பதிவு சேர்க்கப்படவில்லை.";
+        else if (selectedVersion === "jw") currentText = item.jwTamil || "யெகோவா சாட்சிகள் பதிவு சேர்க்கப்படவில்லை.";
+
+        const modernText = item.modern || "எளிய தமிழ் விளக்கம் சேர்க்கப்படவில்லை.";
+        const hasModelAnswer = item.defaultAnswer && item.defaultAnswer.trim().length > 0;
 
         return `
-          <section class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-slate-200">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <span class="text-xs lg:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-100">${item.verseNum}</span>
-              <span class="text-xs text-slate-400 font-semibold">பகுதி #${index + 1}</span>
+          <section class="bg-slate-850/90 border border-slate-800 hover:border-slate-700/80 rounded-3xl p-5 lg:p-6 shadow-xl transition-all">
+            
+            <!-- Verse Header -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="text-xs sm:text-sm font-mono font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-xl border border-indigo-500/20">
+                  ${item.verseNum}
+                </span>
+                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  ${versionBadgeNames[selectedVersion]}
+                </span>
+              </div>
+              <span class="text-xs text-slate-500 font-bold">பகுதி #${index + 1}</span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <div class="space-y-3">
-                <div class="flex flex-wrap gap-1.5 border-b border-slate-100 pb-2">
-                  <button onclick="switchTab(${index}, 'bsi')" id="tab-${index}-bsi" class="tab-btn active text-[11px] font-bold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 transition">BSI (புரொட்டஸ்டன்ட்)</button>
-                  <button onclick="switchTab(${index}, 'rc')" id="tab-${index}-rc" class="tab-btn text-[11px] font-bold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 transition">RC (திருவிவிலியம்)</button>
-                  <button onclick="switchTab(${index}, 'jw')" id="tab-${index}-jw" class="tab-btn text-[11px] font-bold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 transition">யெகோவா (NWT)</button>
-                  <button onclick="switchTab(${index}, 'modern')" id="tab-${index}-modern" class="tab-btn text-[11px] font-bold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 transition">Modern தமிழ்</button>
-                </div>
-
-                <div id="content-${index}-bsi" class="tab-content bg-amber-50/70 border-l-4 border-amber-500 rounded-r-xl p-3.5">
-                  <p class="text-[10px] font-bold text-amber-900 uppercase tracking-wide mb-1">BSI Vedhagamam Text</p>
-                  <p class="text-sm lg:text-base text-amber-950 font-serif leading-relaxed">"${bsi}"</p>
-                </div>
-                <div id="content-${index}-rc" class="tab-content hidden bg-sky-50/70 border-l-4 border-sky-500 rounded-r-xl p-3.5">
-                  <p class="text-[10px] font-bold text-sky-900 uppercase tracking-wide mb-1">RC Thiruviviliam Text</p>
-                  <p class="text-sm lg:text-base text-sky-950 leading-relaxed">"${rc}"</p>
-                </div>
-                <div id="content-${index}-jw" class="tab-content hidden bg-purple-50/70 border-l-4 border-purple-500 rounded-r-xl p-3.5">
-                  <p class="text-[10px] font-bold text-purple-900 uppercase tracking-wide mb-1">Jehovah NWT Text</p>
-                  <p class="text-sm lg:text-base text-purple-950 leading-relaxed">"${jw}"</p>
-                </div>
-                <div id="content-${index}-modern" class="tab-content hidden bg-emerald-50/70 border-l-4 border-emerald-500 rounded-r-xl p-3.5">
-                  <p class="text-[10px] font-bold text-emerald-900 uppercase tracking-wide mb-1">Simple / Modern Tamil Explanation</p>
-                  <p class="text-sm lg:text-base text-emerald-950 leading-relaxed">${modern}</p>
-                </div>
+            <!-- Scripture Text Box (Click to reveal Modern Tamil) -->
+            <div onclick="toggleModern(${index})" class="cursor-pointer group relative bg-slate-900 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-4 lg:p-5 transition shadow-inner">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold text-amber-400/90 tracking-wider uppercase flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  வேத வசனம் (Click to see Modern Tamil)
+                </span>
+                <span id="chevron-${index}" class="text-xs text-indigo-400 font-bold transition-transform duration-200">
+                  + எளிய தமிழ்
+                </span>
               </div>
+              
+              <p class="text-sm sm:text-base text-slate-100 font-serif leading-relaxed">
+                "${currentText}"
+              </p>
 
-              <div class="space-y-3.5 flex flex-col justify-between">
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
-                  <p class="text-[11px] font-bold text-indigo-700 uppercase tracking-wide mb-1">❓ ஆய்வு வினா (Research Question)</p>
-                  <p class="text-sm lg:text-base font-semibold text-slate-800">${item.question || "ஆய்வு வினா சேர்க்கப்படவில்லை."}</p>
-                </div>
-
-                <div class="space-y-2">
-                  <label class="block text-xs font-semibold text-slate-700">✍️ உங்கள் பதில் (Your Research Notes):</label>
-                  <textarea id="user-ans-${index}" rows="3" placeholder="இங்கே உங்கள் பதிலை டைப் செய்யலாம்..." class="w-full text-xs lg:text-sm p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-inner">${savedAnswers[index] || ""}</textarea>
-                  ${hasAnswer ? `
-                    <details class="group bg-slate-50 border border-slate-200 rounded-xl p-3">
-                      <summary class="flex justify-between items-center text-xs font-bold text-indigo-700 cursor-pointer list-none select-none">
-                        <span>💡 சரியான விளக்கம் / பதில் பார்க்க (Show Model Answer)</span>
-                        <span class="text-xs transition-transform group-open:rotate-180">▾</span>
-                      </summary>
-                      <p class="mt-2 text-xs lg:text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-100 leading-relaxed"><strong>பதில்:</strong> ${item.defaultAnswer}</p>
-                    </details>` : `<p class="text-[11px] text-slate-400 italic">குறிப்பு: இந்த வசனத்திற்கு மாதிரி விடை இன்னும் பதிவு செய்யப்படவில்லை.</p>`}
-                </div>
+              <!-- Modern Tamil Accordion Dropdown -->
+              <div id="modern-box-${index}" class="hidden mt-4 pt-3 border-t border-slate-800 bg-emerald-950/20 border-emerald-500/30 rounded-xl p-3.5 transition-all">
+                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  MODERN TAMIL (எளிய தமிழ் உரை)
+                </p>
+                <p class="text-xs sm:text-sm text-emerald-100 font-normal leading-relaxed">
+                  ${modernText}
+                </p>
               </div>
             </div>
-          </section>`;
+
+            <!-- Question and Answer Section -->
+            <div class="mt-5 space-y-3">
+              
+              <!-- Research Question -->
+              <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4">
+                <p class="text-[11px] font-bold text-indigo-400 uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                  <span>❓</span> ஆய்வு வினா (RESEARCH QUESTION)
+                </p>
+                <p class="text-xs sm:text-sm font-semibold text-slate-200">
+                  ${item.question || "ஆய்வு வினா சேர்க்கப்படவில்லை."}
+                </p>
+              </div>
+
+              <!-- User Notes Input Area -->
+              <div class="space-y-1.5">
+                <label class="block text-xs font-semibold text-slate-400">
+                  ✍️ உங்கள் பதில் (Your Research Notes):
+                </label>
+                <textarea 
+                  id="user-ans-${index}"
+                  rows="3" 
+                  placeholder="இங்கே உங்கள் பதிலையோ அல்லது குறிப்புகளையோ டைப் செய்யலாம்..." 
+                  class="w-full text-xs sm:text-sm p-3.5 rounded-2xl border border-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-slate-950 text-slate-200 shadow-inner resize-y"
+                >${savedAnswers[index] || ""}</textarea>
+              </div>
+
+              <!-- Optional Model Answer Accordion -->
+              ${hasModelAnswer ? `
+                <details class="group bg-slate-900/40 border border-slate-800 rounded-2xl p-3">
+                  <summary class="flex justify-between items-center text-xs font-bold text-indigo-400 cursor-pointer list-none select-none hover:text-indigo-300 transition">
+                    <span class="flex items-center gap-1.5">
+                      <span>💡</span> சரியான விளக்கம் / பதில் பார்க்க (Show Model Answer)
+                    </span>
+                    <span class="text-xs transition-transform group-open:rotate-180">▾</span>
+                  </summary>
+                  <div class="mt-3 text-xs sm:text-sm text-slate-300 bg-slate-950 p-3.5 rounded-xl border border-slate-800 leading-relaxed">
+                    <strong class="text-emerald-400 block mb-1">மாதிரி விடை:</strong>
+                    ${item.defaultAnswer}
+                  </div>
+                </details>
+              ` : `
+                <!-- No default answer, clean empty space -->
+              `}
+
+            </div>
+
+          </section>
+        `;
       }).join("");
-    });
+    }
 
-    function switchTab(cardIndex, versionKey) {
-      ["bsi", "rc", "jw", "modern"].forEach(v => {
-        const btn = document.getElementById(`tab-${cardIndex}-${v}`);
-        const content = document.getElementById(`content-${cardIndex}-${v}`);
-        if (v === versionKey) {
-          btn.classList.add("active");
-          content.classList.remove("hidden");
-        } else {
-          btn.classList.remove("active");
-          content.classList.add("hidden");
-        }
-      });
+    function toggleModern(index) {
+      const box = document.getElementById(`modern-box-${index}`);
+      const chevron = document.getElementById(`chevron-${index}`);
+      if (box.classList.contains("hidden")) {
+        box.classList.remove("hidden");
+        chevron.textContent = "▴ மறை";
+      } else {
+        box.classList.add("hidden");
+        chevron.textContent = "+ எளிய தமிழ்";
+      }
     }
 
     function saveAllAnswers() {
