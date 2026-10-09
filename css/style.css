@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #047857;
+  --primary-gradient: linear-gradient(135deg, #065f46 0%, #047857 50%, #0d9488 100%);
+  --accent-gold: #f59e0b;
+  --bg-dark: #0f172a;
+  --bg-page: #f1f5f9;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  padding: 3rem 1.5rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.3);
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  color: #ccfbf1;
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto 1.2rem;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.nav-links a {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: #ffffff;
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.container {
+  max-width: 900px;
+  margin: -1.5rem auto 3rem;
+  padding: 0 1.5rem;
+}
+
+.breadcrumbs-card {
+  background: var(--card-bg);
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.breadcrumbs-card span {
+  cursor: pointer;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.breadcrumbs-card span:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs-card strong {
+  color: var(--text-main);
+  margin-left: 0.35rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.action-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 2.2rem 1.7rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: transparent;
+  transition: background 0.3s;
+}
+
+.action-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: #a7f3d0;
+}
+
+.action-card:hover::before {
+  background: var(--primary);
+}
+
+.action-card .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.action-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.6rem;
+}
+
+.action-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.study-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.tamil-text {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  background: #f8fafc;
+  padding: 1.2rem 1.4rem;
+  border-left: 5px solid var(--primary);
+  border-radius: 8px;
+  color: #1e293b;
+}
+
+.tamil-text.modern {
+  border-left-color: #0ea5e9;
+  background: #f0f9ff;
+}
+
+.question-box {
+  background: #fef2f2;
+  border-left: 5px solid #ef4444;
+  padding: 1.2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #991b1b;
+}
+
+.answer-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1.3rem;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  color: #166534;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 0.85rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
