@@ -3,112 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Add Topic with Verses</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Admin — Research Editor</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-slate-100 p-6">
-  <div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow border border-slate-200">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-bold text-slate-800">Add New Topic with Verse Cards</h2>
-      <a href="index.html" class="text-indigo-600 text-sm font-semibold">← Back to Portal</a>
-    </div>
+<body>
 
-    <form id="admin-topic-form" class="space-y-4">
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="text-xs font-bold text-slate-700">Section</label>
-          <select id="section" class="w-full mt-1 p-2 border rounded-lg text-sm bg-white">
-            <option value="Bible">Bible</option>
+  <header>
+    <h1>Ahley Hadees — Research Editor</h1>
+    <div class="nav-links">
+      <a href="index.html">View Site</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="study-box">
+      <h2>Add New Research Topic</h2>
+      <br>
+      <form id="topic-form">
+        <div class="form-group">
+          <label>Step 1: Research Section</label>
+          <select id="section" required>
             <option value="Quran">Quran</option>
+            <option value="Bible">Bible</option>
           </select>
         </div>
-        <div>
-          <label class="text-xs font-bold text-slate-700">Category</label>
-          <input type="text" id="category" placeholder="Prophecy" required class="w-full mt-1 p-2 border rounded-lg text-sm">
+
+        <div class="form-group">
+          <label>Step 2: Category / Chapter (e.g., Prophecy, Science, Tawheed)</label>
+          <input type="text" id="category" placeholder="Prophecy" required>
         </div>
-      </div>
 
-      <div>
-        <label class="text-xs font-bold text-slate-700">Topic Title</label>
-        <input type="text" id="title" placeholder="Topic 2: ..." required class="w-full mt-1 p-2 border rounded-lg text-sm">
-      </div>
-
-      <div>
-        <label class="text-xs font-bold text-slate-700">Chapter / Verse Reference</label>
-        <input type="text" id="chapterRef" placeholder="எ.கா: மத்தேயு 2:1-12" required class="w-full mt-1 p-2 border rounded-lg text-sm">
-      </div>
-
-      <div class="border-t border-slate-200 pt-4">
-        <div class="flex justify-between items-center mb-2">
-          <label class="text-sm font-bold text-indigo-700">Verses Chain</label>
-          <button type="button" onclick="addVerseField()" class="text-xs bg-indigo-50 text-indigo-600 px-3 py-1 rounded font-bold hover:bg-indigo-100">+ Add Verse</button>
+        <div class="form-group">
+          <label>Step 3: Topic Title</label>
+          <input type="text" id="title" placeholder="Prophecy 1: A Prophet Like Moses" required>
         </div>
-        <div id="verses-form-list" class="space-y-4"></div>
-      </div>
 
-      <button type="submit" class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold shadow hover:bg-indigo-700 transition">
-        Save Topic & All Verses Directly to Disk
-      </button>
-    </form>
+        <div class="form-group">
+          <label>Verse Reference</label>
+          <input type="text" id="verseRef" placeholder="Deuteronomy 18:18" required>
+        </div>
+
+        <div class="form-group">
+          <label>Biblical / Classical Tamil Text</label>
+          <textarea id="classicalTamil" rows="3" placeholder="பழைய தமிழ் வாசகம்..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Modern Tamil Explanation</label>
+          <textarea id="modernTamil" rows="3" placeholder="நவீன தமிழ் விளக்கம்..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Research Question</label>
+          <input type="text" id="question" placeholder="Does this verse refer to..." required>
+        </div>
+
+        <div class="form-group">
+          <label>Answer</label>
+          <textarea id="answer" rows="4" placeholder="Detailed comparative answer..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Sources / References</label>
+          <input type="text" id="sources" placeholder="Tafsir, Books, Hadith references">
+        </div>
+
+        <button type="submit" class="btn-primary">Save Research Data</button>
+        <button type="button" class="btn-primary" style="background: #475569; margin-left: 10px;" id="export-btn">Export topics.json</button>
+      </form>
+    </div>
   </div>
 
-  <script>
-    let verseCount = 0;
-
-    function addVerseField() {
-      verseCount++;
-      const div = document.createElement('div');
-      div.className = "p-4 bg-slate-50 border rounded-xl space-y-2 relative";
-      div.id = `vcard-${verseCount}`;
-      div.innerHTML = `
-        <span class="text-xs font-bold text-slate-500">Verse #${verseCount}</span>
-        <input type="text" placeholder="Verse Reference (மத்தேயு 1:18)" class="w-full p-2 border rounded text-xs v-ref" required>
-        <textarea rows="2" placeholder="Biblical Tamil..." class="w-full p-2 border rounded text-xs v-biblical" required></textarea>
-        <textarea rows="2" placeholder="Modern Tamil..." class="w-full p-2 border rounded text-xs v-modern" required></textarea>
-        <input type="text" placeholder="Question..." class="w-full p-2 border rounded text-xs v-question" required>
-        <textarea rows="2" placeholder="Model Answer..." class="w-full p-2 border rounded text-xs v-answer" required></textarea>
-      `;
-      document.getElementById('verses-form-list').appendChild(div);
-    }
-
-    addVerseField(); // Default 1st verse
-
-    document.getElementById('admin-topic-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const verseCards = document.querySelectorAll('#verses-form-list > div');
-      const verses = [];
-      verseCards.forEach(c => {
-        verses.push({
-          verseNum: c.querySelector('.v-ref').value,
-          biblical: c.querySelector('.v-biblical').value,
-          modern: c.querySelector('.v-modern').value,
-          question: c.querySelector('.v-question').value,
-          defaultAnswer: c.querySelector('.v-answer').value
-        });
-      });
-
-      const newTopic = {
-        id: `topic-${Date.now()}`,
-        section: document.getElementById('section').value,
-        category: document.getElementById('category').value.trim(),
-        title: document.getElementById('title').value.trim(),
-        chapterRef: document.getElementById('chapterRef').value.trim(),
-        headerNote: "ஒவ்வொரு வசனத்திற்கும் கீழே எளிய தமிழ், வினா மற்றும் விடை இணைக்கப்பட்டுள்ளது.",
-        verses: verses
-      };
-
-      const res = await fetch('/api/save-topic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTopic)
-      });
-
-      if (res.ok) {
-        alert('✅ Saved directly to data/topics.json!');
-        window.location.href = 'index.html';
-      }
-    });
-  </script>
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
 </body>
 </html>
