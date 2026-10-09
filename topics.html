@@ -114,13 +114,11 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950">
 
-  <!-- Ambient Light -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
     <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[750px] h-[380px] bg-indigo-600/10 blur-3xl rounded-full"></div>
     <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-red-950/20 blur-3xl rounded-full"></div>
   </div>
 
-  <!-- Header -->
   <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#050811]/90 backdrop-blur-xl px-4 lg:px-8 py-3.5">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -131,15 +129,13 @@
           </h1>
         </div>
       </div>
-      <a href="index.html" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">← Back to Library</a>
+      <button id="back-category-nav" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">← Back to Categories</button>
     </div>
   </header>
 
-  <!-- Main Container -->
   <main class="max-w-6xl w-full mx-auto px-4 lg:px-8 py-6 lg:py-10 flex-1">
     
-    <!-- Title and Search Bar -->
-    <div class="max-w-2xl mx-auto text-center mb-8">
+    <div class="max-w-2xl mx-auto text-center mb-6">
       <h2 id="section-title" class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-white to-slate-200 font-serif-title tracking-wide mb-2">
         Research Topics
       </h2>
@@ -159,8 +155,20 @@
       </div>
     </div>
 
+    <!-- Navigation Breadcrumbs -->
+    <div class="max-w-xl mx-auto mb-6 flex items-center justify-between gap-2 bg-slate-900/60 backdrop-blur border border-slate-800/80 rounded-2xl p-2.5 px-4 text-xs">
+      <div class="text-slate-300 font-medium overflow-x-auto whitespace-nowrap">
+        <a href="index.html" class="hover:text-amber-400 transition">Library</a>
+        <span class="mx-2 text-slate-600">/</span>
+        <a id="crumb-category-link" href="#" class="hover:text-amber-400 transition"><span id="crumb-section"></span></a>
+        <span class="mx-2 text-slate-600">/</span>
+        <span id="crumb-cat" class="text-indigo-400 font-bold"></span>
+      </div>
+      <button id="back-category-btn" class="text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1 rounded-xl transition shrink-0">← Back</button>
+    </div>
+
     <!-- Topics Count Status -->
-    <div class="flex items-center justify-between max-w-5xl mx-auto mb-6 px-2 text-xs text-slate-400">
+    <div class="flex items-center justify-between max-w-5xl mx-auto mb-4 px-2 text-xs text-slate-400">
       <span id="topics-counter" class="font-semibold text-indigo-400">Loading topics...</span>
       <span class="text-[11px] bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">40+ Capacity Engine</span>
     </div>
@@ -177,28 +185,46 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const sectionName = urlParams.get("section") || "Bible";
+    const categoryName = urlParams.get("category") || "Prophecy";
 
     const sectionTitle = document.getElementById("section-title");
     const sectionSubtitle = document.getElementById("section-subtitle");
     const topicsGrid = document.getElementById("topics-grid");
     const searchInput = document.getElementById("search-input");
     const topicsCounter = document.getElementById("topics-counter");
+    const crumbSection = document.getElementById("crumb-section");
+    const crumbCat = document.getElementById("crumb-cat");
+    const crumbCategoryLink = document.getElementById("crumb-category-link");
+    const backCategoryBtn = document.getElementById("back-category-btn");
+    const backCategoryNav = document.getElementById("back-category-nav");
 
-    let sectionTopics = [];
+    const backUrl = `categories.html?section=${encodeURIComponent(sectionName)}`;
+    crumbCategoryLink.href = backUrl;
+    crumbSection.textContent = sectionName;
+    crumbCat.textContent = categoryName;
+
+    const goBack = () => { window.location.href = backUrl; };
+    backCategoryBtn.onclick = goBack;
+    backCategoryNav.onclick = goBack;
+
+    let targetTopics = [];
 
     document.addEventListener("DOMContentLoaded", async () => {
       const allTopics = await getTopics();
-      sectionTopics = allTopics.filter(t => t.section.toLowerCase() === sectionName.toLowerCase());
+      targetTopics = allTopics.filter(t => 
+        t.section.toLowerCase() === sectionName.toLowerCase() &&
+        t.category.toLowerCase() === categoryName.toLowerCase()
+      );
 
-      sectionTitle.textContent = `${sectionName} Research Topics`;
-      sectionSubtitle.textContent = `${sectionName} பிரிவின் கீழ் உள்ள அனைத்து ஆய்வுத் தலைப்புகள்.`;
+      sectionTitle.textContent = `${categoryName} Topics`;
+      sectionSubtitle.textContent = `${sectionName} > ${categoryName} தொகுப்பின் கீழ் உள்ள ஆய்வுத் தலைப்புகள்.`;
 
-      renderTopics(sectionTopics);
+      renderTopics(targetTopics);
 
-      // Search Filter Handler
+      // Realtime Search Filter
       searchInput.addEventListener("input", (e) => {
         const query = e.target.value.toLowerCase().trim();
-        const filtered = sectionTopics.filter(t => 
+        const filtered = targetTopics.filter(t => 
           (t.title && t.title.toLowerCase().includes(query)) ||
           (t.chapterRef && t.chapterRef.toLowerCase().includes(query)) ||
           (t.headerNote && t.headerNote.toLowerCase().includes(query))
