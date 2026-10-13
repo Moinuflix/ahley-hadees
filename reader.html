@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f3f7ff">
+<title>Research Reader — Ahley Hadees</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Plus Jakarta Sans","Noto Sans Tamil",sans-serif;background:#f3f7ff;color:#172554;-webkit-tap-highlight-color:transparent}
+.tamil{font-family:"Noto Sans Tamil","Plus Jakarta Sans",sans-serif;line-height:1.95}
+.arabic{font-family:"Noto Naskh Arabic",serif;line-height:2.1}
+.panel{background:#fff;border:1px solid #dbeafe;border-radius:20px;box-shadow:0 8px 24px rgba(30,64,175,.06)}
+.scripture{background:#fffaf0;border-left:5px solid #f59e0b;color:#713f12}
+.modern{background:#ecfdf5;border-left:5px solid #10b981;color:#064e3b}
+.faq-question{background:#f8fafc;border:1px solid #dbeafe}
+.faq-answer{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.faq-pending{background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}
+.ref-pill{background:#eff6ff;border:1px solid #dbeafe;color:#3730a3}
+button:focus-visible,a:focus-visible{outline:2px solid #2563eb;outline-offset:3px}
+</style>
+</head>
+<body class="min-h-screen">
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-blue-100">
+  <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <a href="index.html" class="flex items-center gap-3 min-w-0">
+      <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 text-slate-950 font-black flex items-center justify-center shadow">AH</span>
+      <span class="min-w-0"><strong class="block text-sm sm:text-base text-blue-950">Ahley Hadees</strong><span class="text-xs text-blue-600">Research Reader</span></span>
+    </a>
+    <button id="back-top" class="rounded-xl border border-blue-200 bg-blue-50 text-blue-800 font-bold text-xs sm:text-sm px-3 py-2">← Topics</button>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-5 sm:py-8">
+  <div id="loading" class="panel p-6 text-center text-slate-600">Research topic load ho raha hai...</div>
+  <div id="error" class="hidden rounded-2xl border border-rose-200 bg-rose-50 text-rose-800 p-5">
+    <h1 class="font-extrabold text-lg">Topic nahi mila</h1>
+    <p id="error-message" class="mt-2 text-sm leading-6">URL mein topic ID check karein.</p>
+    <a id="back-error" href="topics.html" class="inline-block mt-4 font-bold text-blue-700 underline">Back to topics</a>
+  </div>
+
+  <article id="reader" class="hidden">
+    <section class="rounded-3xl bg-gradient-to-br from-blue-700 to-indigo-700 text-white p-5 sm:p-7 shadow-lg shadow-blue-200">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <span id="section-badge" class="rounded-full bg-white/15 border border-white/20 px-3 py-1 text-xs font-bold">SCRIPTURE</span>
+        <span id="category-badge" class="rounded-full bg-white/15 border border-white/20 px-3 py-1 text-xs font-bold">CATEGORY</span>
+      </div>
+      <h1 id="topic-title" class="tamil mt-4 text-2xl sm:text-3xl font-extrabold leading-relaxed"></h1>
+      <p id="topic-description" class="tamil mt-3 text-sm sm:text-base text-blue-100"></p>
+      <div class="mt-5 flex flex-wrap gap-2 text-xs">
+        <span id="passage-count" class="rounded-lg bg-white/10 px-3 py-2"></span>
+        <button id="copy-topic" class="rounded-lg bg-white text-blue-800 font-bold px-3 py-2">Copy topic details</button>
+      </div>
+    </section>
+
+    <nav id="verse-navigation" class="panel mt-5 p-4">
+      <div class="flex items-center justify-between gap-3 mb-3">
+        <h2 class="font-extrabold text-blue-950">Verse Navigation</h2>
+        <span class="text-xs text-slate-500">இந்த ஆய்வில்</span>
+      </div>
+      <div id="verse-nav-list" class="flex flex-wrap gap-2"></div>
+    </nav>
+
+    <section id="passages" class="mt-5 space-y-5"></section>
+    <div class="mt-7 flex items-center justify-between gap-3">
+      <button id="back-bottom" class="rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm font-bold text-blue-800">← Back to Topics</button>
+      <button id="top-button" class="rounded-xl bg-blue-700 px-4 py-3 text-sm font-bold text-white">↑ Top</button>
+    </div>
+  </article>
+</main>
+
+<footer class="mt-8 border-t border-blue-100 bg-white py-5 text-center text-xs text-slate-500">Ahley Hadees Research Library • Study, compare, and research respectfully</footer>
+
+<script>
+(() => {
+"use strict";
+const DATA_URL="data/topics.json";
+const STORAGE_KEYS=["ahley_hadees_topics_v2","ahley_hadees_topics"];
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const topicId=params.get("id");
+let currentTopic=null;
+
+function el(tag, cls, text) {
+  const node=document.createElement(tag);
+  if(cls) node.className=cls;
+  if(text!==undefined) node.textContent=String(text);
+  return node;
+}
+function localTopics() {
+  const all=[];
+  STORAGE_KEYS.forEach(key=>{
+    try {
+      const data=JSON.parse(localStorage.getItem(key)||"[]");
+      if(Array.isArray(data)) all.push(...data);
+    } catch(_) {}
+  });
+  return all;
+}
+async function loadTopics() {
+  let published=[];
+  try {
+    const response=await fetch(DATA_URL,{cache:"no-store"});
+    if(response.ok) {
+      const data=await response.json();
+      if(Array.isArray(data)) published=data;
+    }
+  } catch(_) {}
+  const merged=[...published];
+  const ids=new Set(merged.map(t=>t&&t.id).filter(Boolean));
+  localTopics().forEach(t=>{
+    if(t&&t.id&&!ids.has(t.id)){merged.push(t);ids.add(t.id);}
+  });
+  return merged;
+}
+function normalizePassages(topic) {
+  if(Array.isArray(topic.passages)) return topic.passages.map((p,i)=>({
+    id:p.id||"passage-"+(i+1),
+    reference:p.reference||p.verseNum||("Verse "+(i+1)),
+    scriptureText:p.scriptureText||p.bsiTamil||"",
+    tamilTranslation:p.tamilTranslation||"",
+    version:p.version||"",
+    modernTamil:p.modernTamil||p.modern||"",
+    questions:Array.isArray(p.questions)?p.questions.map(q=>({
+      question:q.question||"",
+      answer:q.answer||q.defaultAnswer||"",
+      status:q.status||((q.answer||q.defaultAnswer)?"answered":"pending"),
+      source:q.source||""
+    })):[]
+  }));
+  // Backward compatibility with the first admin JSON format.
+  if(Array.isArray(topic.verses)) return topic.verses.map((v,i)=>({
+    id:"verse-"+(i+1),
+    reference:v.verseNum||v.reference||("Verse "+(i+1)),
+    scriptureText:topic.section==="Quran"?(v.arabic||v.scriptureText||""):(v.bsiTamil||v.scriptureText||""),
+    tamilTranslation:v.tamilTranslation||"",
+    version:v.version||"",
+    modernTamil:v.modern||v.modernTamil||"",
+    questions:[{
+      question:v.question||"",
+      answer:v.defaultAnswer||v.answer||"",
+      status:(v.defaultAnswer||v.answer)?"answered":"pending",
+      source:""
+    }].filter(q=>q.question)
+  }));
+  return [];
+}
+function backToTopics() {
+  const section=encodeURIComponent(currentTopic?.section||params.get("section")||"Bible");
+  const category=encodeURIComponent(currentTopic?.category||params.get("category")||"Prophecy");
+  location.href=`topics.html?section=${section}&category=${category}`;
+}
+function showError(message) {
+  $("loading").classList.add("hidden");
+  $("reader").classList.add("hidden");
+  $("error").classList.remove("hidden");
+  $("error-message").textContent=message;
+  $("back-error").href=`topics.html?section=${encodeURIComponent(params.get("section")||"Bible")}&category=${encodeURIComponent(params.get("category")||"Prophecy")}`;
+}
+function appendLabel(parent,text) {
+  parent.appendChild(el("h3","text-xs sm:text-sm font-extrabold uppercase tracking-wide mb-2",text));
+}
+function renderQuestion(q,index) {
+  const wrapper=el("section","rounded-2xl p-4 sm:p-5");
+  wrapper.classList.add("faq-question");
+  const head=el("div","flex flex-wrap items-center justify-between gap-2 mb-3");
+  head.appendChild(el("h4","font-extrabold text-indigo-700","❓ ஆய்வு வினா "+(index+1)));
+  const answered=!!String(q.answer||"").trim();
+  const status=el("span","text-xs font-extrabold rounded-full px-3 py-1 "+(answered?"bg-emerald-100 text-emerald-800":"bg-rose-100 text-rose-800"),answered?"● ANSWER AVAILABLE":"● ANSWER PENDING");
+  head.appendChild(status);
+  wrapper.appendChild(head);
+  wrapper.appendChild(el("p","tamil text-base sm:text-lg font-bold text-slate-800",q.question||"Question not entered"));
+  const answerBox=el("div","mt-4 rounded-xl p-4 "+(answered?"faq-answer":"faq-pending"));
+  appendLabel(answerBox,answered?"சரியான விளக்கம் / மாதிரி பதில்":"பதில் இன்னும் சேர்க்கப்படவில்லை");
+  if(answered) {
+    answerBox.appendChild(el("p","tamil text-sm sm:text-base",q.answer));
+    if(q.source) answerBox.appendChild(el("p","mt-3 text-xs font-bold opacity-80","ஆதாரம்: "+q.source));
+  } else {
+    answerBox.appendChild(el("p","tamil text-sm","இந்தக் கேள்விக்கான பதில் இன்னும் ஆய்வில் உள்ளது."));
+  }
+  wrapper.appendChild(answerBox);
+  return wrapper;
+}
+function renderPassage(p,index,section) {
+  const card=el("article","panel p-4 sm:p-6 scroll-mt-24");
+  card.id="verse-"+(index+1);
+  const head=el("div","flex items-start justify-between gap-3 border-b border-blue-100 pb-3 mb-4");
+  const ref=el("span","ref-pill rounded-lg px-3 py-2 text-sm font-extrabold",p.reference||("Verse "+(index+1)));
+  const number=el("span","text-xs text-slate-400 font-bold shrink-0","பகுதி #"+(index+1));
+  head.append(ref,number);
+  card.appendChild(head);
+
+  const scripture=el("section","scripture rounded-r-2xl rounded-l-md p-4 sm:p-5");
+  appendLabel(scripture,section==="Quran"?"📖 குர்ஆன் அரபி வசனம்":"📖 வேதாகம வசனம் (தமிழ்)");
+  const scriptureText=el("p",(section==="Quran"?"arabic text-2xl sm:text-3xl text-right":"tamil text-base sm:text-lg")+" whitespace-pre-wrap",p.scriptureText||"Scripture text not added.");
+  if(section==="Quran"){scriptureText.dir="rtl";scriptureText.lang="ar";}
+  scripture.appendChild(scriptureText);
+  if(section==="Quran"&&p.tamilTranslation) {
+    const tr=el("div","mt-4 pt-4 border-t border-amber-200");
+    appendLabel(tr,"தமிழ் மொழிபெயர்ப்பு");
+    tr.appendChild(el("p","tamil text-sm sm:text-base whitespace-pre-wrap",p.tamilTranslation));
+    scripture.appendChild(tr);
+  } else if(section==="Bible"&&p.version) {
+    scripture.appendChild(el("p","mt-3 text-xs font-bold text-amber-800","பதிப்பு / மூலம்: "+p.version));
+  }
+  card.appendChild(scripture);
+
+  if(p.modernTamil) {
+    const modern=el("section","modern mt-4 rounded-r-2xl rounded-l-md p-4 sm:p-5");
+    appendLabel(modern,"🟢 எளிய / நவீன தமிழ் விளக்கம்");
+    modern.appendChild(el("p","tamil text-sm sm:text-base whitespace-pre-wrap",p.modernTamil));
+    card.appendChild(modern);
+  }
+
+  const faq=el("section","mt-5");
+  const questions=Array.isArray(p.questions)?p.questions:[];
+  const faqHead=el("div","flex items-center justify-between gap-2 mb-3");
+  faqHead.appendChild(el("h3","text-base sm:text-lg font-extrabold text-blue-950","FAQ — ஆய்வு வினா & விடை"));
+  faqHead.appendChild(el("span","text-xs font-bold text-slate-500",questions.length+" வினா"));
+  faq.appendChild(faqHead);
+  if(questions.length) questions.forEach((q,i)=>faq.appendChild(renderQuestion(q,i)));
+  else faq.appendChild(el("div","faq-pending rounded-xl p-4 tamil text-sm","இந்த வசனத்திற்கு FAQ இன்னும் சேர்க்கப்படவில்லை."));
+  card.appendChild(faq);
+  return card;
+}
+function renderTopic(topic) {
+  currentTopic=topic;
+  const passages=normalizePassages(topic);
+  $("section-badge").textContent=topic.section==="Quran"?"HOLY QURAN":"THE BIBLE";
+  $("category-badge").textContent=topic.category||"Research";
+  $("topic-title").textContent=topic.title||"Untitled Topic";
+  $("topic-description").textContent=topic.description||topic.headerNote||"வசனங்களை வாசித்து, விளக்கங்களைப் படித்து, கேள்வி-பதில்களை ஆய்வு செய்யவும்.";
+  $("passage-count").textContent=passages.length+" verses / passages";
+  const nav=$("verse-nav-list");nav.replaceChildren();
+  passages.forEach((p,i)=>{
+    const b=el("a","ref-pill rounded-lg px-3 py-2 text-xs font-bold hover:bg-blue-100",p.reference||("Verse "+(i+1)));
+    b.href="#verse-"+(i+1);
+    nav.appendChild(b);
+  });
+  const container=$("passages");container.replaceChildren();
+  if(passages.length) passages.forEach((p,i)=>container.appendChild(renderPassage(p,i,topic.section||"Bible")));
+  else container.appendChild(el("div","panel p-5 text-sm text-slate-600","இந்த topic-ல் passages இல்லை. Admin editor-ல் verses சேர்த்து topics.json export செய்து publish செய்யவும்."));
+  $("loading").classList.add("hidden");
+  $("error").classList.add("hidden");
+  $("reader").classList.remove("hidden");
+}
+$("back-top").addEventListener("click",backToTopics);
+$("back-bottom").addEventListener("click",backToTopics);
+$("top-button").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+$("copy-topic").addEventListener("click",async()=>{
+  if(!currentTopic)return;
+  const passages=normalizePassages(currentTopic);
+  const text=[currentTopic.title||"",currentTopic.section||"",currentTopic.category||"",...passages.map(p=>[
+    p.reference,p.scriptureText,p.tamilTranslation,p.modernTamil,...p.questions.map(q=>q.question+"\n"+q.answer)
+  ].filter(Boolean).join("\n"))].filter(Boolean).join("\n\n");
+  try {
+    await navigator.clipboard.writeText(text);
+    $("copy-topic").textContent="Copied!";
+  } catch(_) {
+    const ta=el("textarea","");ta.value=text;document.body.appendChild(ta);ta.select();
+    const ok=document.execCommand("copy");ta.remove();
+    $("copy-topic").textContent=ok?"Copied!":"Copy unavailable";
+  }
+});
+async function start() {
+  if(!topicId){showError("Reader URL mein ?id=TOPIC_ID missing hai. Topics page se 'ஆராய்' button use karein.");return;}
+  const topics=await loadTopics();
+  const topic=topics.find(t=>t&&String(t.id)===topicId);
+  if(!topic){showError("Is ID ka topic data/topics.json ya is browser ke saved data mein nahi mila. JSON export karke GitHub par upload karein.");return;}
+  renderTopic(topic);
+}
+start();
+})();
+</script>
+</body>
+</html>
