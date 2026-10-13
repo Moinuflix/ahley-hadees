@@ -1,186 +1,565 @@
+
 <!DOCTYPE html>
 <html lang="ta">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Research Studio - Protected Admin</title>
+  <meta name="theme-color" content="#0b1020">
+  <title>Ahley Hadees — Research Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #090d18;
+      color: #f8fafc;
+    }
+    .field {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      background: #0b1020;
+      color: #f8fafc;
+      outline: none;
+    }
+    .field:focus {
+      border-color: #a78bfa;
+    }
+    .field::placeholder {
+      color: #64748b;
+    }
+    .section-card {
+      background: #111827;
+      border: 1px solid #293449;
+      border-radius: 18px;
+      padding: 18px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 7px;
+    }
+    button {
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 sm:p-6 flex flex-col justify-center items-center">
-  <div id="lock-screen" class="w-full max-w-sm bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-2xl text-center">
-    <div class="w-12 h-12 bg-indigo-600 text-white rounded-xl flex items-center justify-center mx-auto mb-4 text-xl font-bold">🔒</div>
-    <h2 class="text-lg font-bold mb-1">Editor Access Required</h2>
-    <p class="text-xs text-slate-400 mb-4">Please enter the security passkey to access the Research Editor.</p>
-    <input type="password" id="pass-input" placeholder="Enter Password..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm mb-3 focus:outline-none focus:border-indigo-500 text-center">
-    <button onclick="verifyPass()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Unlock Editor</button>
-  </div>
 
-  <div id="admin-panel" class="hidden w-full max-w-3xl bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-2xl">
-    <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
-      <div>
-        <h2 class="text-lg sm:text-xl font-bold text-white">Ahley Hadees — Research Studio Editor</h2>
-        <p class="text-xs text-slate-400">Add & configure multi-translation verses directly.</p>
+<body class="min-h-screen p-3 sm:p-6">
+
+  <main class="max-w-3xl mx-auto space-y-5">
+
+    <header class="section-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-400 text-black
+                    font-black text-xl flex items-center justify-center">
+          AH
+        </div>
+        <div>
+          <h1 class="text-xl font-bold">Research Studio</h1>
+          <p class="text-sm text-slate-400">Ahley Hadees Research Library</p>
+        </div>
       </div>
-      <a href="index.html" class="text-xs font-bold text-indigo-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700">Exit to Home</a>
+
+      <p class="text-sm text-slate-300">
+        Quran aur Bible research topics, references, Tamil explanations
+        aur FAQ-style questions manage karein.
+      </p>
+
+      <a href="index.html"
+         class="inline-block mt-4 text-sm font-bold text-amber-300">
+        ← Back to Home
+      </a>
+    </header>
+
+    <div class="section-card space-y-4">
+      <h2 class="text-lg font-bold">1. Scripture & Category</h2>
+
+      <div>
+        <label for="section">Scripture Section</label>
+        <select id="section" class="field">
+          <option value="Quran">Holy Quran</option>
+          <option value="Bible">The Bible</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="category">Category</label>
+        <select id="category" class="field"></select>
+      </div>
+
+      <div id="custom-category-wrap" class="hidden">
+        <label for="custom-category">New Category Name</label>
+        <input id="custom-category" class="field"
+               placeholder="Enter category name">
+      </div>
+
+      <button type="button" id="add-category"
+        class="text-sm font-bold text-amber-300">
+        + Add New Category
+      </button>
     </div>
 
-    <form id="admin-form" class="space-y-5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form id="topic-form" class="space-y-5">
+
+      <div class="section-card space-y-4">
+        <h2 class="text-lg font-bold">2. Research Topic</h2>
+
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Scripture Section</label>
-          <select id="section" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200">
-            <option value="Bible">The Bible</option>
-            <option value="Quran">Holy Quran</option>
-          </select>
+          <label for="title">Topic Title (Tamil)</label>
+          <input id="title" class="field"
+                 placeholder="ஆய்வுத் தலைப்பை உள்ளிடவும்" required>
         </div>
+
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Category Choice</label>
-          <select id="category-select" onchange="toggleCustomCategory(this.value)" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200">
-            <option value="Prophecy">Prophecy (தீர்க்கதரிசனம்)</option>
-            <option value="Science">Science (அறிவியல்)</option>
-            <option value="Tawheed">Tawheed (ஓரிறைக்கொள்கை)</option>
-            <option value="Jesus">Jesus (ஈஸா நபி ஆய்வு)</option>
-            <option value="__custom__">+ Add New Category...</option>
-          </select>
-          <input type="text" id="custom-category" placeholder="Type new category..." class="hidden mt-2 w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200">
+          <label for="reference">Main Reference</label>
+          <input id="reference" class="field"
+                 placeholder="Surah/Ayah or Bible Book/Chapter/Verse"
+                 required>
+        </div>
+
+        <div>
+          <label for="explanation">Simple Tamil Explanation</label>
+          <textarea id="explanation" class="field" rows="3"
+            placeholder="எளிய தமிழில் விளக்கம் எழுதவும்"></textarea>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="section-card space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Topic Title</label>
-          <input type="text" id="title" placeholder="Topic 2: ..." required class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200">
+          <h2 class="text-lg font-bold">3. Scripture Text</h2>
+          <p class="text-sm text-slate-400 mt-1">
+            Selected scripture-ku suitable fields mattum fill pannunga.
+          </p>
         </div>
+
+        <div id="quran-fields" class="space-y-4">
+          <div>
+            <label for="arabic">Arabic Ayah</label>
+            <textarea id="arabic" class="field text-xl"
+              dir="rtl" lang="ar" rows="3"
+              placeholder="آية القرآن الكريم"></textarea>
+          </div>
+
+          <div>
+            <label for="quran-tamil">Tamil Translation</label>
+            <textarea id="quran-tamil" class="field" rows="3"
+              placeholder="தமிழ் மொழிபெயர்ப்பு"></textarea>
+          </div>
+        </div>
+
+        <div id="bible-fields" class="hidden space-y-4">
+          <div>
+            <label for="bible-tamil">Bible Verse — Tamil</label>
+            <textarea id="bible-tamil" class="field" rows="4"
+              placeholder="தமிழ் வேதாகம வசனம்"></textarea>
+          </div>
+
+          <div>
+            <label for="bible-version">Bible Version / Source</label>
+            <input id="bible-version" class="field"
+              placeholder="உதா: BSI Tamil edition">
+          </div>
+        </div>
+
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Chapter / Verse Reference</label>
-          <input type="text" id="chapterRef" placeholder="எ.கா: மத்தேயு 2:1-12" required class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200">
+          <label for="source">Source / Additional Reference</label>
+          <input id="source" class="field"
+            placeholder="Book, chapter, edition or research source">
         </div>
       </div>
 
-      <div class="border-t border-slate-700 pt-5">
-        <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-bold text-indigo-400">Verses Chain Studio</label>
-          <button type="button" onclick="addVerseCard()" class="text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg transition">+ Add Another Verse</button>
+      <div class="section-card space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-bold">4. Research FAQ</h2>
+            <p class="text-xs text-slate-400 mt-1">
+              Answer available = Green · Pending = Red
+            </p>
+          </div>
+          <button type="button" id="add-question"
+            class="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-bold">
+            + Question
+          </button>
         </div>
-        <div id="verses-box" class="space-y-5"></div>
+
+        <div id="questions" class="space-y-4"></div>
       </div>
 
-      <div class="pt-4 flex flex-col sm:flex-row gap-3">
-        <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold text-white text-xs rounded-xl shadow transition">💾 Save Topic Directly to Disk</button>
-        <button type="button" onclick="exportJsonFile()" class="py-3 px-5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs rounded-xl transition">⬇️ Export topics.json</button>
+      <div class="section-card space-y-3">
+        <h2 class="text-lg font-bold">5. Save Research Topic</h2>
+
+        <button type="submit"
+          class="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500
+                 p-3 font-bold">
+          Save Topic in This Browser
+        </button>
+
+        <button type="button" id="export-json"
+          class="w-full rounded-xl bg-amber-400 hover:bg-amber-300
+                 text-black p-3 font-bold">
+          Download topics.json
+        </button>
+
+        <button type="button" id="clear-form"
+          class="w-full rounded-xl bg-slate-700 p-3 font-bold">
+          Clear Form
+        </button>
+
+        <p id="status" role="status"
+           class="text-sm text-slate-300" aria-live="polite"></p>
+
+        <p class="text-xs text-slate-400 leading-5">
+          Browser save is local to this browser. To publish changes,
+          download topics.json and upload it to your GitHub data folder.
+          This page does not write directly to GitHub.
+        </p>
       </div>
+
     </form>
-  </div>
 
-  <script src="js/data.js"></script>
-  <script>
-    let verseCount = 0;
-    function verifyPass() {
-      const val = document.getElementById("pass-input").value;
-      if (val === "786") {
-        document.getElementById("lock-screen").classList.add("hidden");
-        document.getElementById("admin-panel").classList.remove("hidden");
-      } else {
-        alert("❌ Invalid Passkey! Access Denied.");
+    <footer class="text-center text-xs text-slate-500 py-5">
+      Ahley Hadees Research Library
+    </footer>
+
+  </main>
+
+<script>
+(() => {
+  "use strict";
+
+  const DATA_URL = "data/topics.json";
+  const STORAGE_KEY = "ahley_hadees_topics_v2";
+  const CATEGORY_KEY = "ahley_hadees_categories_v1";
+
+  const $ = id => document.getElementById(id);
+
+  let topics = [];
+  let categories = {
+    Quran: ["Tawheed", "Prophets", "Science", "Other"],
+    Bible: ["Prophecy", "Jesus", "Theology", "History", "Science"]
+  };
+
+  let questionCount = 0;
+  let customCategoryMode = false;
+
+  function showStatus(message, error = false) {
+    $("status").textContent = message;
+    $("status").className =
+      "text-sm " + (error ? "text-rose-400" : "text-emerald-400");
+  }
+
+  function safeRead(key, fallback) {
+    try {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value) : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  async function initialize() {
+    try {
+      const response = await fetch(DATA_URL);
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data)) topics = data;
       }
+    } catch {
+      // Opening from file:// or unavailable JSON is supported
+      // through the browser's local storage fallback.
     }
 
-    function toggleCustomCategory(val) {
-      const customInput = document.getElementById("custom-category");
-      if (val === "__custom__") {
-        customInput.classList.remove("hidden");
-        customInput.focus();
-      } else {
-        customInput.classList.add("hidden");
-      }
-    }
-
-    function addVerseCard() {
-      verseCount++;
-      const div = document.createElement("div");
-      div.className = "p-4 bg-slate-900/80 border border-slate-700 rounded-2xl space-y-3 relative";
-      div.id = `verse-block-${verseCount}`;
-      div.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-          <span class="text-xs font-bold text-indigo-400">Verse Block #${verseCount}</span>
-          <button type="button" onclick="removeVerseCard(${verseCount})" class="text-xs text-rose-400 hover:underline">Remove</button>
-        </div>
-        <input type="text" placeholder="Verse Reference (மத்தேயு 1:18)" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-ref text-slate-200" required>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <textarea rows="3" placeholder="1. BSI / Protestant Tamil..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-bsi text-slate-200" required></textarea>
-          <textarea rows="3" placeholder="2. RC / Catholic Tamil..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-rc text-slate-200"></textarea>
-          <textarea rows="3" placeholder="3. Jehovah / NWT Tamil..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-jw text-slate-200"></textarea>
-        </div>
-        <textarea rows="2" placeholder="Modern Tamil Explanation..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-modern text-slate-200"></textarea>
-        <input type="text" placeholder="Research Question (கேள்வி)..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-question text-slate-200" required>
-        <textarea rows="2" placeholder="Model Answer (பதில் - விருப்பத்திற்குரியது)..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs v-answer text-slate-200"></textarea>
-      `;
-      document.getElementById("verses-box").appendChild(div);
-    }
-
-    function removeVerseCard(num) {
-      const el = document.getElementById(`verse-block-${num}`);
-      if (el) el.remove();
-    }
-    addVerseCard();
-
-    document.getElementById("admin-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const selectVal = document.getElementById("category-select").value;
-      const category = (selectVal === "__custom__") ? document.getElementById("custom-category").value.trim() : selectVal;
-
-      const blocks = document.querySelectorAll("#verses-box > div");
-      const verses = [];
-      blocks.forEach(b => {
-        verses.push({
-          verseNum: b.querySelector(".v-ref").value.trim(),
-          bsiTamil: b.querySelector(".v-bsi").value.trim(),
-          rcTamil: b.querySelector(".v-rc").value.trim(),
-          jwTamil: b.querySelector(".v-jw").value.trim(),
-          modern: b.querySelector(".v-modern").value.trim(),
-          question: b.querySelector(".v-question").value.trim(),
-          defaultAnswer: b.querySelector(".v-answer").value.trim()
-        });
+    const savedTopics = safeRead(STORAGE_KEY, []);
+    if (Array.isArray(savedTopics)) {
+      const ids = new Set(topics.map(topic => topic.id));
+      savedTopics.forEach(topic => {
+        if (!ids.has(topic.id)) topics.push(topic);
       });
+    }
 
-      const newTopic = {
-        id: `topic-${Date.now()}`,
-        section: document.getElementById("section").value,
-        category: category,
-        title: document.getElementById("title").value.trim(),
-        chapterRef: document.getElementById("chapterRef").value.trim(),
-        headerNote: "ஒவ்வொரு வசனத்திற்கும் BSI, RC, யெகோவா பதிப்புகள் மற்றும் வினா-விடை ஒப்பீடு.",
-        verses: verses
-      };
-
-      try {
-        const res = await fetch("/api/save-topic", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newTopic)
-        });
-        if (res.ok) {
-          alert("✅ Topic Seedha data/topics.json file me save ho gaya!");
-          localStorage.removeItem("ahley_hadees_topics");
-          window.location.href = "index.html";
-          return;
+    const savedCategories = safeRead(CATEGORY_KEY, null);
+    if (savedCategories && typeof savedCategories === "object") {
+      for (const section of ["Quran", "Bible"]) {
+        if (Array.isArray(savedCategories[section])) {
+          categories[section] = [
+            ...new Set([...categories[section], ...savedCategories[section]])
+          ];
         }
-      } catch (err) {}
+      }
+    }
 
-      const topics = await getTopics();
-      topics.push(newTopic);
-      localStorage.setItem("ahley_hadees_topics", JSON.stringify(topics));
-      alert("⚠️ Local Storage me save hua. Export topics.json dabayein.");
+    // Include categories already present in the topic data.
+    topics.forEach(topic => {
+      if (categories[topic.section] && topic.category) {
+        if (!categories[topic.section].includes(topic.category)) {
+          categories[topic.section].push(topic.category);
+        }
+      }
     });
 
-    async function exportJsonFile() {
-      const topics = await getTopics();
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(topics, null, 2));
-      const dlAnchor = document.createElement("a");
-      dlAnchor.setAttribute("href", dataStr);
-      dlAnchor.setAttribute("download", "topics.json");
-      dlAnchor.click();
+    renderCategories();
+    renderScriptureFields();
+    addQuestion();
+  }
+
+  function saveLocalData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(topics));
+    localStorage.setItem(CATEGORY_KEY, JSON.stringify(categories));
+  }
+
+  function renderCategories(selectedValue) {
+    const section = $("section").value;
+    const select = $("category");
+    select.replaceChildren();
+
+    (categories[section] || []).forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      select.appendChild(option);
+    });
+
+    const addOption = document.createElement("option");
+    addOption.value = "__custom__";
+    addOption.textContent = "+ Add New Category...";
+    select.appendChild(addOption);
+
+    if (selectedValue && categories[section].includes(selectedValue)) {
+      select.value = selectedValue;
+    } else {
+      select.selectedIndex = 0;
     }
-  </script>
+  }
+
+  function renderScriptureFields() {
+    const isQuran = $("section").value === "Quran";
+
+    $("quran-fields").classList.toggle("hidden", !isQuran);
+    $("bible-fields").classList.toggle("hidden", isQuran);
+
+    $("arabic").required = isQuran;
+    $("quran-tamil").required = isQuran;
+    $("bible-tamil").required = !isQuran;
+
+    renderCategories();
+  }
+
+  $("section").addEventListener("change", () => {
+    customCategoryMode = false;
+    $("custom-category-wrap").classList.add("hidden");
+    renderScriptureFields();
+  });
+
+  $("category").addEventListener("change", () => {
+    customCategoryMode = $("category").value === "__custom__";
+    $("custom-category-wrap").classList.toggle(
+      "hidden", !customCategoryMode
+    );
+    if (customCategoryMode) $("custom-category").focus();
+  });
+
+  $("add-category").addEventListener("click", () => {
+    customCategoryMode = true;
+    $("category").value = "__custom__";
+    $("custom-category-wrap").classList.remove("hidden");
+    $("custom-category").focus();
+  });
+
+  function addQuestion(data = {}) {
+    questionCount++;
+    const id = questionCount;
+
+    const card = document.createElement("div");
+    card.className = "rounded-xl border border-slate-700 bg-slate-900 p-4 space-y-3";
+    card.dataset.questionId = String(id);
+
+    const heading = document.createElement("div");
+    heading.className = "flex items-center justify-between gap-2";
+
+    const title = document.createElement("span");
+    title.className = "text-sm font-bold text-indigo-300";
+    title.textContent = "Question " + id;
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "text-xs font-bold text-rose-400";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", () => card.remove());
+
+    heading.append(title, remove);
+
+    const question = document.createElement("textarea");
+    question.className = "field";
+    question.rows = 2;
+    question.required = true;
+    question.placeholder = "Research question...";
+    question.value = data.question || "";
+
+    const answer = document.createElement("textarea");
+    answer.className = "field";
+    answer.rows = 4;
+    answer.placeholder = "Verified answer (optional)...";
+    answer.value = data.answer || "";
+
+    const source = document.createElement("input");
+    source.className = "field";
+    source.placeholder = "Answer source / reference (optional)";
+    source.value = data.source || "";
+
+    const status = document.createElement("div");
+    status.className = "text-xs font-bold";
+
+    function updateStatus() {
+      const answered = answer.value.trim().length > 0;
+      status.textContent = answered
+        ? "● ANSWER AVAILABLE"
+        : "● ANSWER PENDING";
+      status.className = "text-xs font-bold " +
+        (answered ? "text-emerald-400" : "text-rose-400");
+    }
+
+    answer.addEventListener("input", updateStatus);
+    updateStatus();
+
+    card.append(heading, question, answer, source, status);
+    $("questions").appendChild(card);
+  }
+
+  $("add-question").addEventListener("click", () => addQuestion());
+
+  function getCategory() {
+    if (!customCategoryMode) return $("category").value;
+
+    const value = $("custom-category").value.trim();
+    if (!value) throw new Error("New category name enter pannunga.");
+
+    const section = $("section").value;
+    if (!categories[section].includes(value)) {
+      categories[section].push(value);
+    }
+
+    customCategoryMode = false;
+    $("custom-category-wrap").classList.add("hidden");
+    renderCategories(value);
+    return value;
+  }
+
+  function collectQuestions() {
+    return [...$("questions").children].map(card => {
+      const fields = card.querySelectorAll("textarea, input");
+      const question = fields[0].value.trim();
+      const answer = fields[1].value.trim();
+      const source = fields[2].value.trim();
+
+      return {
+        id: "q-" + crypto.randomUUID(),
+        question,
+        answer,
+        status: answer ? "answered" : "pending",
+        source
+      };
+    }).filter(item => item.question);
+  }
+
+  $("topic-form").addEventListener("submit", event => {
+    event.preventDefault();
+
+    try {
+      const section = $("section").value;
+      const category = getCategory();
+      const questions = collectQuestions();
+
+      if (!questions.length) {
+        throw new Error("Kam se kam ek research question add karo.");
+      }
+
+      const passage = {
+        reference: $("reference").value.trim(),
+        scriptureText: section === "Quran"
+          ? $("arabic").value.trim()
+          : $("bible-tamil").value.trim(),
+        tamilTranslation: section === "Quran"
+          ? $("quran-tamil").value.trim()
+          : "",
+        explanation: $("explanation").value.trim(),
+        version: section === "Bible"
+          ? $("bible-version").value.trim()
+          : "",
+        source: $("source").value.trim(),
+        questions
+      };
+
+      const topic = {
+        id: "topic-" + crypto.randomUUID(),
+        section,
+        category,
+        title: $("title").value.trim(),
+        reference: passage.reference,
+        explanation: passage.explanation,
+        passages: [passage],
+        createdAt: new Date().toISOString()
+      };
+
+      topics.push(topic);
+      saveLocalData();
+      renderCategories(category);
+
+      showStatus(
+        "Topic browser mein save hua. Publish karne ke liye topics.json download karo."
+      );
+
+      $("topic-form").reset();
+      $("section").value = section;
+      renderScriptureFields();
+      $("questions").replaceChildren();
+      addQuestion();
+    } catch (error) {
+      showStatus(error.message || "Save failed.", true);
+    }
+  });
+
+  $("export-json").addEventListener("click", () => {
+    try {
+      saveLocalData();
+
+      const blob = new Blob(
+        [JSON.stringify(topics, null, 2)],
+        { type: "application/json;charset=utf-8" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "topics.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      showStatus("topics.json download requested. GitHub data folder mein upload karo.");
+    } catch {
+      showStatus("Export failed. Browser storage check karo.", true);
+    }
+  });
+
+  $("clear-form").addEventListener("click", () => {
+    $("topic-form").reset();
+    $("section").value = "Quran";
+    customCategoryMode = false;
+    $("custom-category-wrap").classList.add("hidden");
+    renderScriptureFields();
+    $("questions").replaceChildren();
+    addQuestion();
+    showStatus("Form cleared. Saved topics delete nahi hue.");
+  });
+
+  initialize().catch(() => {
+    showStatus("Initialization error. Page reload karke try karo.", true);
+  });
+})();
+</script>
+
 </body>
 </html>
